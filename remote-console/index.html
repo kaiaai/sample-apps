@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body onload="connectConsole()">
+    <script>
+      function print(messageText) {
+         var log = document.getElementById("log");
+         var logText = log.innerHTML;
+        if (logText)
+          log.innerHTML = messageText + '\n' + logText;
+        else
+          log.innerHTML = messageText;
+      }
+      function printEvent(eventType, arg) {
+        if (eventType === 'kaia.console')
+          print(JSON.stringify(arg.msg));
+        else
+          print(arg === undefined ? eventType : eventType + ' ' + JSON.stringify(arg));
+      }
+      function connectConsole() {
+        try {
+          window.kaia.online.on = printEvent;
+          window.kaia.online.init();
+        }
+        catch (e) {
+          print('Exception ' + JSON.stringify(e));
+        }
+        finally {
+          print('Script finished');
+        }
+      }
+      function sendMsg() {
+        sendTextElement = document.getElementById("sendText");
+        msg = sendTextElement.value;
+        print(msg);
+        sendTextElement.value = "";
+        //socket.emit('kaia.console', msg);
+        window.kaia.online.sendConsoleMsg(msg);
+      }
+    </script>
+    <textarea id="log" rows="30" cols="60" readonly></textarea>
+    <p></p>
+    <div>
+    <input type="text" id="sendText" />
+    <input type="button" id="sendBtn" value="Send" onclick="sendMsg();" />
+    </div>
+    <script src="https://kaia.ai/socket.io/socket.io.js"></script>    
+    <script src="kaia-test.js"></script>
+  </body>
+</html>
