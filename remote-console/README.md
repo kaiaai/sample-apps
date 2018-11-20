@@ -4,7 +4,7 @@ Once you sign in to kaia.ai on one or more of your devices, Kaia.ai provides a l
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5aa78c8f1f0267133aedce1c)
-- Sample app [source code](https://github.com/kaiaai/tree/master/console)
+- Sample app [source code](https://github.com/kaiaai/tree/master/remote-console)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
