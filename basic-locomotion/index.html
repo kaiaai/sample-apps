@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #log {
+        width: 100vw;
+        /* height: 100vh; */
+        /* background-color: #87CEEB;*/
+        border: none;
+        display: flex;
+        box-sizing: border-box;         /* For IE and modern versions of Chrome */
+        -moz-box-sizing: border-box;    /* For Firefox                          */
+        -webkit-box-sizing: border-box; /* For Safari                           */
+      }
+    </style>
+  </head>
+<body onload="connectConsole();connectToSerial()">
+<script>
+function print(messageText) {
+  var log = document.getElementById("log");
+  var logText = log.innerHTML;
+  if (logText)
+    log.innerHTML = messageText + '\n' + logText;
+  else
+    log.innerHTML = messageText;
+}
+function onScoutEvent(info) {
+  switch(info.event) {
+    case "model":
+      // computed updated position, speed
+      document.getElementById("freq").innerHTML = Math.round(1/info.model.dTime);
+      document.getElementById("time").innerHTML = Number.parseFloat(info.model.time).toFixed(1);
+      document.getElementById("x").innerHTML = Math.round(info.model.x*1000) + " mm";
+      document.getElementById("y").innerHTML = Math.round(info.model.y*1000) + " mm";
+      //document.getElementById("heading").innerHTML = Number.parseFloat(info.model.heading*180/Math.PI).toFixed(0) + " deg";
+      document.getElementById("heading").innerHTML = Math.round(info.model.heading*180/Math.PI) + " deg";
+      document.getElementById("encLeft").innerHTML = Number.parseFloat(info.model.encLeft).toFixed(3) + " m";
+      document.getElementById("encRight").innerHTML = Number.parseFloat(info.model.encRight).toFixed(3) + " m";
+      document.getElementById("radius").innerHTML = Math.round(info.model.r*1000) + " mm";
+      document.getElementById("speed").innerHTML = Math.round(info.model.speed*100) + " cm/s";
+      document.getElementById("posValid").innerHTML = info.model.posValid;
+      document.getElementById("spdValid").innerHTML = info.model.speedValid;
+      document.getElementById("accValid").innerHTML = info.model.accValid;
+      document.getElementById("angSpd").innerHTML = Math.round(info.model.angularSpeed*180/Math.PI) + " deg/s";
+      document.getElementById("accel").innerHTML = Number.parseFloat(info.model.accel).toFixed(3) + " m/s2";
+      document.getElementById("angAcc").innerHTML = Math.round(info.model.angularAccel*180/Math.PI) + " deg/s2";
+      break;
+    case "parsed":
+      // update message from bot
+      document.getElementById("distFwd").innerHTML = info.msg.distForward;
+      document.getElementById("distBack").innerHTML = info.msg.distBack;
+      document.getElementById("distLeft").innerHTML = info.msg.distLeft;
+      document.getElementById("distRight").innerHTML = info.msg.distRight;
+      document.getElementById("distTop").innerHTML = info.msg.distTop;
+      if (info.msg.vcc) {
+	    document.getElementById("vcc").innerHTML = info.msg.vcc;
+      	document.getElementById("fw").innerHTML = info.msg.fw;
+      }
+      break;
+    case "moveComplete":
+    case "moveError":
+    case "send":
+    case "move":
+      console.log(info);
+      break;
+    default:
+      // messages from blutooth
+	  document.getElementById("event").innerHTML = info.event;
+	  document.getElementById("eventDetails").innerHTML = JSON.stringify(info);
+      appendToLog(info.msg+'\n');
+      break;
+  }
+}
+  function appendToLog(text) {
+    let args = {name: 'Hello-Scout-Log', append: true, text: text, type: 'text', storage_type: "external"};
+    let res = window.kaia.storage.writeFile(args);
+    if (!window.kaia.log)
+      window.kaia.log = text;
+    else
+      window.kaia.log = window.kaia.log + text;
+  }
+  async function connectToSerial() {
+    try {
+      print('CONNECT to Scout over Android USB OTG serial');
+  
+      if (!window.kaia) {
+        print("ERROR: Kaia.js library not found - did you include &lt;script src=&quot;kaia.js&quot;&gt;&lt;/script&gt; in your HTML page?");
+        return;
+      }
+      print("Detected Kaia.js library");
+
+      if (!window.kaia.getAppInfo()) {
+        print("ERROR: Kaia.ai mobile app not detected - please install Kaia.ai Android app from Google Play and open  page from the Kaia.ai mobile app");
+          return;
+        }
+        print("Detected Android Kaia.ai mobile app");
+
+        let config = window.kaia.device.getConfig({});
+        print('Connected to Wifi: ' + config.wifi.in_use);
+        if (config.wifi.in_use)
+          print('WiFi IP: ' + config.wifi.ip || 'undefined');
+        let reqConfig = { 'screenOrientationLock': true };
+        if (!config.gpsEnabled)
+          reqConfig.locationService = true;
+        window.kaia.device.setConfig(reqConfig);
+        print('Locked screen orientation');
+
+        // Connect serial->Scout: scout gets messages from bot base
+        window.kaia.serial.on = window.kaia.scout;
+        // Connect scout->ble: scout sends messages to bot base
+        window.kaia.scout.comm.transport = window.kaia.serial;
+
+        // Display scout events
+        window.kaia.scout.on = onScoutEvent;
+      
+        print('Starting serial service ...');
+        var ret;
+        // TODO await
+        ret = window.kaia.serial.init();
+        print('ret=' + ret);
+        print('Serial config= ' + JSON.stringify(window.kaia.serial.getConfig()));
+        print('Serial initialized successfully');
+        print('--- PLUG IN CABLE NOW ---');
+      } catch (e) {
+        print('Exception ' + JSON.stringify(e));
+    } finally {
+      print('Script finished');
+    }
+  }
+
+  function sendSerialMsg() {
+    txText = document.getElementById("txText");
+    msg = txText.value;
+    print(msg);
+    txText.value = "";
+
+    let res = window.kaia.serial.send({ 'message': msg });
+    if (!res.success)
+      print(JSON.stringify(res));
+  }
+  
+
+function printEvent(eventType, arg) {
+    print(arg === undefined ? eventType : eventType + ' ' + JSON.stringify(arg));
+}
+function connectConsole() {
+  print('Connecting to remote console');
+  try {
+    window.kaia.online.on = printEvent;
+    window.kaia.online.init();
+    window.kaia.online.enableRemoteConsole(true);
+  }
+  catch (e) {
+    print('Exception ' + JSON.stringify(e));
+  }
+  finally {
+    print('connectConsole() finished');
+  }
+}
+</script>
+<div>freq= <span id="freq">?</span></div>
+<div>time= <span id="time">?</span></div>
+<div>x= <span id="x">?</span></div>
+<div>y= <span id="y">?</span></div>
+<div>heading= <span id="heading">?</span></div>
+<div>encLeft= <span id="encLeft">?</span></div>
+<div>encRight= <span id="encRight">?</span></div>
+<div>radius= <span id="radius">?</span></div>
+<div>speed= <span id="speed">?</span></div>
+<div>accel= <span id="accel">?</span></div>
+<div>angSpd= <span id="angSpd">?</span></div>
+<div>angAcc= <span id="angAcc">?</span></div>
+<div>distFwd= <span id="distFwd">?</span></div>
+<div>distBack= <span id="distBack">?</span></div>
+<div>distLeft= <span id="distLeft">?</span></div>
+<div>distRight= <span id="distRight">?</span></div>
+<div>distTop= <span id="distTop">?</span></div>
+<div>posValid= <span id="posValid">?</span></div>
+<div>spdValid= <span id="spdValid">?</span></div>
+<div>accValid= <span id="accValid">?</span></div>
+<div>vcc= <span id="vcc">?</span></div>
+<div>fw= <span id="fw">?</span></div>
+<div>event= <span id="event">?</span></div>
+<div>eventDetails= <span id="eventDetails">?</span></div>
+<script src="/socket.io/socket.io.js"></script>    
+<script src="kaia-test.js"></script>
+<script src="scout.js"></script>
+  <div><p></p><textarea width="100%" id="log" rows="30" cols="60" readonly></textarea></div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TensorFlow Lite Recognition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {margin: 20px; text-align: center; font-family: sans-serif;}
+      #webcam-frame {width: 224px; height: 224px; overflow: hidden; margin: 0 auto 20px auto;}
+      #webcam {margin-left: -37px; background: gray;}
+      .flip-horizontally {transform: rotateY(180deg);}
+      button {font-size: 12pt; padding: 10px 30px 10px 30px; border-radius: 40px; color: white; background: blue;}
+      button:active {background: gray;}
+      button:focus {outline: none;}
+      #result {margin: 20px; line-height: 2; font-weight: bold;}
+    </style>
+  </head>
+  <body>
+    <h1>TensorFlow Lite Recognition</h1>
+    <div>
+      <div id="webcam-frame">
+        <video id="webcam" width="224px" height="224px" autoplay playsinline muted></video>
+      </div>
+      <button id="recognize-button">Initializing...</button>
+      <button id="close-button">Close</button>
+      <div id="status"></div>
+    </div>
+    <script src="./bundle.js" charset="utf-8"></script>
+  </body>
+</html>
