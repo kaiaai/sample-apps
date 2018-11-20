@@ -1,5 +1,5 @@
 # TensorFlow Mobile Demo App, using Webpack
-Recognize live webcam images on Kaia.ai robots using TensorFlow Mobile
+Recognize live webcam images on Kaia.ai robots using TensorFlow Mobile and MobileNet
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5bb31d8c13b19f10c42f43d5)
