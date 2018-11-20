@@ -23,3 +23,13 @@ Sample robot apps illustrating Kaia.ai platform API, robot app development and p
 20. TensorFlow Mobile, [Live Demo](https://kaia.ai/view-app/5ba319fc89bed10c954a2702), [Source](https://github.com/kaiaai/sample-apps/tree/master/tensorflow-mobile) - recognize live webcam images using TensorFlow Mobile and MobileNet
 21. Text to Speech, [Live Demo](https://kaia.ai/view-app/5a055af654d7fc08c068f3b9), [Source](https://github.com/kaiaai/sample-apps/tree/master/text-to-speech) - robot says "Hello"
 22. Remote Console, [Live Demo](https://kaia.ai/view-app/5aa78c8f1f0267133aedce1c), [Source](https://github.com/kaiaai/sample-apps/tree/master/remote-console) - debug robot apps remotely
+
+## Instructions to Run Apps
+Kaia.ai robot apps run on Android smartphones. To run the sample app:
+1. Go to [kaia.ai](https://kaia.ai/), familiarize yourself with how the robot platform works
+2. Optional, but highly recommended: if you don't have Kaia.ai account, create an account
+3. Go to Google Play, search for "kaia.ai" to find and install Kaia.ai Android app
+4. Launch Kaia.ai Android app on your Android smartphone
+5. In Kaia.ai Android app: (optional, but highly recommended): sign in, navigate to Kaia.ai App Store
+6. Choose a robot app to launch
+7. Optionally: click the heart icon to pin the robot app to your launch screen
