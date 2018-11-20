@@ -5,7 +5,7 @@ Note: expect this API to be eventually deprecated in favor of WebUSB
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bea7418f8864127d7ee4cac)
-- Sample app [source code](https://github.com/kaiaai/tree/master/serial)
+- Sample app [source code](https://github.com/kaiaai/tree/master/usb-serial)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
