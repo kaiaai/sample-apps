@@ -1,5 +1,5 @@
 # Webcam Image Recognition using TensorFlow JS
-Make your robot recognize live webcam images.
+Make your robot recognize live webcam images using TensorFlow JS and MobileNet.
 
 The app uses [TensorFlow.js](https://js.tensorflow.org/) to perform image recognition
 based on a pre-trained neural network model.
