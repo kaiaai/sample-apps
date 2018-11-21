@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Device Settings</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+    <style>
+      i.fa {
+        display: inline-block;
+        border-radius: 60px;
+        box-shadow: 0px 0px 2px #888;
+        padding: 0.5em 0.6em;
+        background-color: #ff4444;
+        color: white;
+    }
+    </style>
+  </head>
+<body>
+<script type="module">
+  import { createDeviceSettings } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.7.0/dist/kaia.mjs';
+  const showDebugLogText = 'Show debug log';
+  let deviceSettings, deviceConfig;
+  setup();
+  
+  function setup() {
+    try {
+      setupGui()
+      setupDeviceSettings();
+    } catch (e) {
+      console.log('setup() catch() ', e);
+    }
+  }
+  
+  async function setupDeviceSettings() {
+    try {
+      if (!createDeviceSettings) {
+        print('Kaia.js library not found, unable to continue.');
+        return;
+      }
+      markLibraryDetected();      
+      
+      if (!window._kaia) {
+        print('Kaia.ai Android app not detected, unable to continue.');
+        print('Go to Google Play Android app store, download Kaia.ai app and use it to launch this web app.');
+        return;
+      }
+      markAppDetected();
+      
+      //let reqConfig = { screenOrientationLock: true, fullScreen: true, wakeLock: true};
+      //window._kaia.deviceSetConfig(reqConfig);
+      //print('Locked screen orientation');
+
+      deviceSettings = createDeviceSettings();
+      markDeviceSettingsCreated();
+      print('DeviceSettings initialized');
+      deviceConfig = await deviceSettings.getConfig();
+console.log(deviceConfig);
+      print('Queried DeviceSettings');
+      displayConfig(deviceConfig);
+      
+//      let res = await deviceSettings.configure({fullScreen:true});
+//      print('configure()');
+//console.log(await deviceSettings.getConfig());
+    } catch (e) {
+      print('Exception ' + JSON.stringify(e));
+    } finally {
+      print('setupDeviceSettings() finished');
+    }
+  }
+  function setupGui() {
+    // Need to do this when script type is module
+    // Use UMD lib version to avoid this
+    const logButton = document.getElementById('showLogButton');
+    logButton.innerHTML = showDebugLogText;
+    logButton.onclick = setLogButtonText;
+    
+    document.getElementById('fullScreenButton').onclick = (() => toggleButton('fullScreen'));
+    document.getElementById('swipeToReloadButton').onclick = (() => toggleButton('swipeToReload'));
+    document.getElementById('screenOrientationLockButton').onclick = (() => toggleButton('screenOrientationLock'));
+    document.getElementById('wakeLockButton').onclick = (() => toggleButton('wakeLock'));
+    document.getElementById('pageZoomButton').onclick = (() => toggleButton('pageZoom'));
+    document.getElementById('muteButton').onclick = (() => toggleButton('mute'));
+    document.getElementById('changeVolumeButton').onclick = changeVolume;
+  }
+  function check(id) {
+    $(id).removeClass('fa-times').addClass('fa-check').css('background-color','green');
+  }
+  function markLibraryDetected() {
+    document.getElementById('libraryDetectedText').innerHTML = ' Kaia.js library detected';
+    check('#libraryDetectedIcon');
+  }
+  function markAppDetected(yes) {
+    document.getElementById('appDetectedText').innerHTML = ' Kaia.ai Android app detected';
+    check('#appDetectedIcon');
+  }
+  function markDeviceSettingsCreated() {
+    document.getElementById('createdText').innerHTML = ' DeviceSettings created';
+    check('#createdIcon');
+  }
+  function print(messageText) {
+    let log = document.getElementById('log');
+    let logText = log.innerHTML;
+    log.innerHTML = logText ? (messageText + '\n' + logText) : messageText;
+  }
+  function printEvent(eventType, arg) {
+    print(arg === undefined ? eventType : eventType + ' ' + JSON.stringify(arg));
+  }
+  function setLogButtonText() {
+    let button = document.getElementById("showLogButton");
+    button.innerHTML = (button.innerHTML === showDebugLogText) ?'Hide debug log' : showDebugLogText;
+  }
+  function displayConfig(config) {
+    $('#settings').empty();
+    let keys = Object.keys(config);
+    for (let key of keys) {
+      if (key === 'event' || key === 'err')
+        continue;
+      let value = config[key];
+      if (typeof value === 'object')
+        value = JSON.stringify(value);
+      $('#settings').append('<div id="' + key + '">' + key + ':' + value + '</div>' );
+    }
+  }
+  async function toggleButton(key) {
+    let buttonId = key + 'Button';
+    let button = document.getElementById(buttonId);
+    let buttonHtml = button.innerHTML;
+    let enable = buttonHtml.startsWith('Enable');
+    let config = {};
+    config[key] = enable;
+    await deviceSettings.configure(config);
+    buttonHtml = enable ? buttonHtml.replace("Enable", "Disable") : buttonHtml.replace("Disable", "Enable");
+    button.innerHTML = buttonHtml;
+    deviceConfig = await deviceSettings.getConfig();
+    displayConfig(deviceConfig);
+  }
+  async function changeVolume() {
+console.log(deviceConfig.volume);
+    let volume = deviceConfig.volume;
+    volume = (volume > 0.5) ? (volume - 0.5) : (volume + 0.5);
+    let config = {};
+    config['volume'] = volume;
+    await deviceSettings.configure(config);
+    deviceConfig = await deviceSettings.getConfig();
+    displayConfig(deviceConfig);
+  }
+
+</script>
+  <div class="p-3 container">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <p><i class="fa fa-times" id="libraryDetectedIcon"></i><span id="libraryDetectedText"> Kaia.js library not detected</span></p>
+        <p><i class="fa fa-times" id="appDetectedIcon"></i><span id="appDetectedText"> Kaia.ai Android app not detected</span></p>
+        <p><i class="fa fa-times" id="createdIcon"></i><span id="createdText"> DeviceSettings not created</span></p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-12" id="settings"></div>
+    </div>
+        
+    <div class="row">
+      <div class="col-lg-12">
+        <button class="btn btn-info btn-block" type="button" id="fullScreenButton">Enable Full Screen</button>
+        <button class="btn btn-info btn-block" type="button" id="swipeToReloadButton">Disable Swipe-to-Reload Gesture</button>
+        <button class="btn btn-info btn-block" type="button" id="screenOrientationLockButton">Enable Screen Orientation Lock</button>
+        <button class="btn btn-info btn-block" type="button" id="wakeLockButton">Enable Wake Lock</button>
+        <button class="btn btn-info btn-block" type="button" id="pageZoomButton">Disable Page Pinch Zoom</button>
+        <button class="btn btn-info btn-block" type="button" id="muteButton">Enable Volume Mute</button>
+        <button class="btn btn-info btn-block" type="button" id="changeVolumeButton">Change Volume</button>
+        <p></p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="collapse" id="collapse_log">
+          <label for="log"> </label>
+          <textarea class="form-control" rows="5" id="log" readonly></textarea>
+        </div>
+      </div>
+    </div>  
+    
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapse_log" aria-expanded="false" aria-controls="collapseExample" id="showLogButton">Show debug log</button>
+        </div>  
+      </div>
+    </div>
+    
+  </div>  
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
