@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Miscellaneous W3C</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  </head>
+<body>
+<script type="module">
+  setup();
+
+  function setup() {
+    document.getElementById('vibrateButton').onclick = vibrate;
+
+    $('#output').append('<div>Logical CPUs: ' + navigator.hardwareConcurrency + '</div>');
+    $('#output').append('<div>Platform: ' + navigator.platform + '</div>');
+    $('#output').append('<div>Connection Type: ' + navigator.connection.type + '</div>');
+    $('#output').append('<div>Connection Effective Type: ' + navigator.connection.effectiveType + '</div>');
+    $('#output').append('<div>Connection Downlink: ' + navigator.connection.downlink + ' Kbits/s</div>');
+    $('#output').append('<div>Connection Round Trip Time: ' + navigator.connection.rtt + ' ms</div>');
+    $('#output').append('<div>Device RAM: ~' + navigator.deviceMemory + ' GB</div>');
+    $('#output').append('<div>JavaScript Heap Size Limit: ' + Math.round(window.performance.memory.jsHeapSizeLimit/1024/1024) + ' MB</div>');
+    $('#output').append('<div>JavaScript Total Heap Size: ' + Math.round(window.performance.memory.totalJSHeapSize/1024/1024) + ' MB</div>');
+    $('#output').append('<div>JavaScript Used Heap Size: ' + Math.round(window.performance.memory.usedJSHeapSize/1024/1024) + ' MB</div>');
+    $('#output').append('<div>Echo Cancellation: ' + navigator.mediaDevices.getSupportedConstraints().echoCancellation + '</div>');
+    navigator.storage.estimate().then(
+      estimate => {
+        $('#output').append('<div>Available Storage: ' + Math.round(estimate.quota/1024/1024) + ' MB</div>');
+        $('#output').append('<div>Used Storage: ' + Math.round(estimate.usage/1024/1024) + ' MB</div>');
+      }
+    );
+  }
+  async function vibrate() {
+    window.navigator.vibrate([200, 400, 200, 200, 200]); 
+  }
+
+</script>
+  <div class="p-3 container">
+
+    <div class="row">
+      <div class="col-lg-12" id="output"></div>
+    </div>
+        
+    <div class="row">
+      <div class="col-lg-12">
+        <p></p>
+        <button class="btn btn-info btn-block" type="button" id="vibrateButton">Vibrate</button>
+        <p></p>
+      </div>
+    </div>
+    
+  </div>  
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

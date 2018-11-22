@@ -7,3 +7,11 @@ Various potentially useful APIs
 - query network connection status, [ref](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API)
 - query number of logical processors, [ref](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency)
 - access storage API, [ref](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API)
+- query camera capabilities, [ref](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getSupportedConstraints)
+
+```js
+  // vibrate once
+  window.navigator.vibrate([200]);
+  // vibrate a sequence
+  window.navigator.vibrate([200, 400, 200, 200, 200]);
+````
