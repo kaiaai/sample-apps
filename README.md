@@ -24,6 +24,7 @@ Sample robot apps illustrating Kaia.ai platform API, robot app development and p
 21. Text to Speech, [Live Demo](https://kaia.ai/view-app/5a055af654d7fc08c068f3b9), [Source](https://github.com/kaiaai/sample-apps/tree/master/text-to-speech) - robot says "Hello"
 22. Remote Console, [Live Demo](https://kaia.ai/view-app/5aa78c8f1f0267133aedce1c), [Source](https://github.com/kaiaai/sample-apps/tree/master/remote-console) - debug robot apps remotely
 23. Miscellaneous W3C API, [Live Demo](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05), [Source](https://github.com/kaiaai/sample-apps/tree/master/misc-w3c) - use vibration, query memory and storage sizes, number of logical CPUs, network connection type and speed
+24. Video Recorder, [Live Demo](https://kaia.ai/view-app/5bf7db1e219810765f711539), [Source](https://github.com/kaiaai/sample-apps/tree/master/video-recorder) - record, download video with or without audio; grab still frames
 
 ## Instructions to Run Apps
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
