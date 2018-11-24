@@ -1,6 +1,8 @@
 # TensorFlow Lite Demo App
 Recognize live webcam images on Kaia.ai robots using TensorFlow Lite and MobileNet. Build the app using Webpack flow.
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bbaf55b0f5dc42505c75e3c)
 - Sample app [source code](https://github.com/kaiaai/tree/master/tensorflow-lite-node)

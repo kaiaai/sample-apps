@@ -5,7 +5,7 @@ Recognize speech using [PocketSphinx](https://github.com/cmusphinx/pocketsphinx)
 - robot recognizes free-form speech
 - robot transcribes phonemes
 
-Note: expect this API to be eventually deprecated in favor of Web speech recognition
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bc2d14dde36b95961d79d14)
@@ -26,6 +26,9 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 - navigate to My Files, create a sub-folder at Kaia.ai
 - upload all repository files into the new sub-folder
 - navigate to My Apps, click New App, fill out and submit app form to publish your new app
+
+## Deprecation
+Expect this API to be eventually deprecated in favor of Web speech recognition
 
 ## Speech Recognition API Overview
 ```js

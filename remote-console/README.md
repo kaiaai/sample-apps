@@ -2,6 +2,8 @@
 Debug robot apps remotely.
 Once you sign in to kaia.ai on one or more of your devices, Kaia.ai provides a low-bandwidth messaging service between all those devices including robot apps and desktop browsers. For high-bandwidth peer-to-peer connection you can use, for example, WebRTC.
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5aa78c8f1f0267133aedce1c)
 - Sample app [source code](https://github.com/kaiaai/tree/master/remote-console)

@@ -1,6 +1,8 @@
 # TensorFlow Lite Demo App
 Recognize live webcam images using TensorFlow Lite and MobileNet
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5bbaccffa2f5f31d466259b6)
 - Sample app [source code](https://github.com/kaiaai/tree/master/tensorflow-lite)

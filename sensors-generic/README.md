@@ -7,6 +7,8 @@ Sample code monitoring robot sensors:
 
 See W3C development guide and examples [here](https://developers.google.com/web/updates/2017/09/sensors-for-the-web)
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bd6b40699b4d91400ea9f53)
 - Sample app [source code](https://github.com/kaiaai/tree/master/sensors-generic)

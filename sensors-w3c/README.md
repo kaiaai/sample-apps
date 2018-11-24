@@ -3,6 +3,8 @@ Sample code using [events](https://developers.google.com/web/fundamentals/native
 - [DeviceOrientationEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent)
 - [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent)
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bd566a6d92adb62c5e9b3d0)
 - Sample app [source code](https://github.com/kaiaai/tree/master/sensors-w3c)

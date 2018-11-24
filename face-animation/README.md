@@ -1,6 +1,8 @@
 # Face Animation Demo App
 Animate robot's face
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5a0556a554d7fc08c068f3b7)
 - Sample app [source code](https://github.com/kaiaai/tree/master/face-animation)

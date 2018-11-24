@@ -1,7 +1,7 @@
 # USB Serial Demo App
 Sample code connecting to Arduino using USB OTG serial
 
-Note: expect this API to be eventually deprecated in favor of WebUSB
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bea7418f8864127d7ee4cac)
@@ -22,6 +22,9 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 - navigate to My Files, create a sub-folder at Kaia.ai
 - upload all repository files into the new sub-folder
 - navigate to My Apps, click New App, fill out and submit app form to publish your new app
+
+## Deprecation
+Expect this API to be eventually deprecated in favor of WebUSB
 
 ## Serial API Overview
 ```js

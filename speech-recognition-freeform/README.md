@@ -1,7 +1,7 @@
-
-
 # Freeform Speech Recognition Demo App
 Recognize speech using [Android SpeechRecognizer](https://developer.android.com/reference/android/speech/SpeechRecognizer)
+
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bcd0a021eca4d32ace78dc1)

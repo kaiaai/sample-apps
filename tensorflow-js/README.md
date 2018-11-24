@@ -10,6 +10,8 @@ pre-trained on
 to recognize [1000 categories of images](src/imagenet_classes.js).
 FYI, a collection of sample images is shown on the right.
 
+[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5b935e56d43cf628afba3543)
 - Sample app [source code](https://github.com/kaiaai/sample-apps/tree/master/tensorflow-js)
