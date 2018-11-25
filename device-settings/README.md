@@ -28,7 +28,7 @@ console.log(deviceConfig);
 //   wakeLock: false, pageZoom: true, appVersion: '0.4.0.beta.rel',
 //   muted: false, gpsEnabled: true, networkEnabled: true, connectedToInternet: true,
 //   wifi: { inUse: true, signalLevel: 3, rssi: -63, ip: 102.168.1.18 },
-//   volume: 1, maxVolume: 0.25
+//   volume: 1, maxVolume: 0.25, displayRotation: 0
 // }
 
 // Change device settings
