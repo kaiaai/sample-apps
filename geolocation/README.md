@@ -1,7 +1,7 @@
 # Geolocation Demo App
 Get robot coordinates using W3C [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation) and view them on a map
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bd7d8a9a1dc7546772f69be)

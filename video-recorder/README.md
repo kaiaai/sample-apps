@@ -2,7 +2,7 @@
 Record, download video with or without audio. Grab still frame.
 Follows MediaRecorder [codepen](https://codepen.io/miguelao/pen/bZPKwP)
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5bf7db1e219810765f711539)

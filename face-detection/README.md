@@ -1,7 +1,7 @@
 # Face Detection Demo App
 Robot detects face using live webcam and turns automatically to face the human
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5b8b8336c38e3b3579ca986f)

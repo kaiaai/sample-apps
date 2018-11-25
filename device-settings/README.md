@@ -1,7 +1,7 @@
 # Device Settings Demo App
 Control device settings including ...
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5bf3b412a444a76d57bd2899)

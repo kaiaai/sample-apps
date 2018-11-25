@@ -1,7 +1,7 @@
 # Text-to-Speech Demo App
 Robot says Hello using Android Text-to-Speech
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5a055af654d7fc08c068f3b9)

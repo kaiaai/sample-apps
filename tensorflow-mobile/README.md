@@ -1,7 +1,7 @@
 # TensorFlow Mobile Demo App
 Recognize live webcam images on Kaia.ai robots using TensorFlow Mobile and MobileNet
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5ba319fc89bed10c954a2702)

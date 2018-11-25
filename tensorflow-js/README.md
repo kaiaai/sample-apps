@@ -10,7 +10,7 @@ pre-trained on
 to recognize [1000 categories of images](src/imagenet_classes.js).
 FYI, a collection of sample images is shown on the right.
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5b935e56d43cf628afba3543)

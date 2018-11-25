@@ -3,7 +3,7 @@ Sample code to monitor battery level
 
 See the official W3C standard and examples [here](https://www.w3.org/TR/battery-status/). This API works, but W3C has marked it as deprecated.
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bd549fd96bf4d605ba2500d)

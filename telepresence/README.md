@@ -3,7 +3,7 @@ Telepresence sample app using [WebRTC](https://webrtc.org/), following Shane Tul
 
 Log in to kaia.ai site on your smartphone and launch this app. Then also log in and launch this app on desktop (or a second smartphone). The two devices should then establish video and audio connections. Make sure both devices are on the same local network.
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bdfd8251c3c5242d93d43ad)

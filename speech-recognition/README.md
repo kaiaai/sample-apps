@@ -5,7 +5,7 @@ Recognize speech using [PocketSphinx](https://github.com/cmusphinx/pocketsphinx)
 - robot recognizes free-form speech
 - robot transcribes phonemes
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bc2d14dde36b95961d79d14)

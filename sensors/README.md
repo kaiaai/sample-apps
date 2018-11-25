@@ -1,7 +1,7 @@
 # Sensors Demo App
 View sensor readings - acceleration, gyroscope, light, presure, magnetic, proximity, etc.
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5a110a4cc0c25c1f565eba63)

@@ -1,6 +1,8 @@
 # Messaging Demo App
 Exchange messages between your robots, desktop.
 
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
+
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/)
 - Sample app [source code](https://github.com/kaiaai/tree/master/messaging)

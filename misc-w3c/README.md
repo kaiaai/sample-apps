@@ -9,7 +9,7 @@ Various potentially useful APIs
 - access storage API, [ref](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API)
 - query camera capabilities, [ref](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getSupportedConstraints)
 
-[![Deploy](https://kaia.ai/assets/images/deploy.png)](https://kaia.ai/deploy)
+[![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05)
