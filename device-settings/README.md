@@ -35,7 +35,10 @@ console.log(deviceConfig);
 let config = {
   fullScreen: true, // enter full screen
   swipeToReload: false, // disable swipe-to-reload-page (for gamepad apps)
-  screenOrientationLock: true, // lock screen orientation
+  screenOrientationLock: true, // lock current screen orientation, or set orientation below:
+    // 'behind', 'fullSensor', 'fullUser', 'landscape', 'locked', 'nosensor', 'portrait',
+    // 'reverseLandscape', 'reversePortrait', 'sensor', 'sensorLandscape', 'sensorPortrait',
+    // 'unspecified', 'user', 'userLandscape', 'userPortrait'
   wakeLock: true, // keep display on
   pageZoom: false, // disable page pinch zoom (for gamepad apps)
   mute: true, // mute (e.g. speech recognition beep)
