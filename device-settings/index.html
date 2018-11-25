@@ -29,7 +29,7 @@
       setupGui()
       setupDeviceSettings();
     } catch (e) {
-      console.log('setup() catch() ', e);
+      print('setup() catch() ', e);
     }
   }
   
@@ -48,21 +48,14 @@
       }
       markAppDetected();
       
-      //let reqConfig = { screenOrientationLock: true, fullScreen: true, wakeLock: true};
-      //window._kaia.deviceSetConfig(reqConfig);
-      //print('Locked screen orientation');
-
       deviceSettings = createDeviceSettings();
       markDeviceSettingsCreated();
       print('DeviceSettings initialized');
       deviceConfig = await deviceSettings.getConfig();
-console.log(deviceConfig);
+
       print('Queried DeviceSettings');
       displayConfig(deviceConfig);
       
-//      let res = await deviceSettings.configure({fullScreen:true});
-//      print('configure()');
-//console.log(await deviceSettings.getConfig());
     } catch (e) {
       print('Exception ' + JSON.stringify(e));
     } finally {
@@ -137,7 +130,6 @@ console.log(deviceConfig);
     displayConfig(deviceConfig);
   }
   async function changeVolume() {
-console.log(deviceConfig.volume);
     let volume = deviceConfig.volume;
     volume = (volume > 0.5) ? (volume - 0.5) : (volume + 0.5);
     let config = {};
