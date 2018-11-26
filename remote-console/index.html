@@ -1,51 +1,128 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>Remote Console</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          crossorigin="anonymous">
+    <style>
+      i.fa {
+        display: inline-block;
+        border-radius: 60px;
+        box-shadow: 0px 0px 2px #888;
+        padding: 0.5em 0.6em;
+        background-color: #ff4444;
+        color: white;
+    }
+    </style>
   </head>
-  <body onload="connectConsole()">
-    <script>
-      function print(messageText) {
-         var log = document.getElementById("log");
-         var logText = log.innerHTML;
-        if (logText)
-          log.innerHTML = messageText + '\n' + logText;
-        else
-          log.innerHTML = messageText;
+<body>
+<script type="module">
+  import { createMessaging } from './kaia-services.mjs';
+  let messaging, sendButton, sendText;
+  const roomName = 'console';
+
+  setup();
+  
+  function setup() {
+    try {
+      setupGui()
+      setupConsole();
+    } catch (e) {
+      console.log('setup() catch() ', e);
+    }
+  }
+  async function setupConsole() {
+    try {
+      if (!createMessaging) {
+        print('Kaia.js library not found, unable to continue.');
+        return;
       }
-      function printEvent(eventType, arg) {
-        if (eventType === 'kaia.console')
-          print(JSON.stringify(arg.msg));
-        else
-          print(arg === undefined ? eventType : eventType + ' ' + JSON.stringify(arg));
-      }
-      function connectConsole() {
-        try {
-          window.kaia.online.on = printEvent;
-          window.kaia.online.init();
-        }
-        catch (e) {
-          print('Exception ' + JSON.stringify(e));
-        }
-        finally {
-          print('Script finished');
-        }
-      }
-      function sendMsg() {
-        sendTextElement = document.getElementById("sendText");
-        msg = sendTextElement.value;
-        print(msg);
-        sendTextElement.value = "";
-        //socket.emit('kaia.console', msg);
-        window.kaia.online.sendConsoleMsg(msg);
-      }
-    </script>
-    <textarea id="log" rows="30" cols="60" readonly></textarea>
-    <p></p>
-    <div>
-    <input type="text" id="sendText" />
-    <input type="button" id="sendBtn" value="Send" onclick="sendMsg();" />
+      markLibraryDetected();      
+      
+      messaging = await createMessaging({ io: io(), eventListener: onMessageEvent, rooms: roomName });
+      markConnected();
+      print('Connected to Kaia.ai messaging service');
+      
+    } catch (e) {
+      print('Exception ' + JSON.stringify(e));
+    } finally {
+      print('setupMessaging() finished');
+    }
+  }
+  function onMessageEvent(err, msg) {
+    if (!err && msg.event === 'message') {
+console.log(msg);
+      print(msg.client + ' in room ' + msg.room + ' says ' + msg.message);
+    }
+  }
+  function setupGui() {
+    // Need to do this when script type is module
+    // Use UMD lib version to avoid this
+    sendButton = document.getElementById('sendButton');
+    sendButton.onclick = sendMessage;
+    sendText = document.getElementById("sendText");
+  }
+  function sendMessage() {
+    let msg = sendText.value;
+    print('Sending to room ' + roomName + ': ' + msg);
+    //sendText.value = '';
+
+    messaging.send(msg, roomName);
+  }
+  function check(id) {
+    $(id).removeClass('fa-times').addClass('fa-check').css('background-color','green');
+  }
+  function markLibraryDetected() {
+    document.getElementById('libraryDetectedText').innerHTML = ' Kaia-services.js library detected';
+    check('#libraryDetectedIcon');
+  }
+  function markConnected() {
+    document.getElementById('connectedText').innerHTML = ' Connected to Kaia.ai server';
+    check('#connectedIcon');
+    $('#sendButton').prop('disabled', false);
+  }
+  function print(messageText) {
+    let log = document.getElementById('log');
+    let logText = log.innerHTML;
+    log.innerHTML = logText ? (messageText + '\n' + logText) : messageText;
+  }
+
+</script>
+  <div class="p-3 container">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <p><i class="fa fa-times" id="libraryDetectedIcon"></i><span id="libraryDetectedText"> Kaia-services.js library not detected</span></p>
+        <p><i class="fa fa-times" id="connectedIcon"></i><span id="connectedText"> Not connected to Kaia.ai server</span></p>
+      </div>
     </div>
-    <script src="https://kaia.ai/socket.io/socket.io.js"></script>    
-    <script src="kaia-test.js"></script>
-  </body>
+    
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="log"> </label>
+          <textarea class="form-control" rows="10" id="log" readonly></textarea>
+          <input class="form-control" id="sendText" placeholder="Enter text to send" value="Hello">
+          <button class="btn btn-primary btn-block" type="button" id="sendButton" disabled>Send</button>
+        </div>
+      </div>
+    </div>  
+    
+  </div>  
+  
+  <script src="https://kaia.ai/socket.io/socket.io.js"></script>    
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+          integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+          integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+          crossorigin="anonymous"></script>
+</body>
 </html>
