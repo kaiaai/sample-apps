@@ -23,9 +23,10 @@ Sample robot apps illustrating Kaia.ai platform API, robot app development and p
 20. TensorFlow Mobile, [Live Demo](https://kaia.ai/view-app/5ba319fc89bed10c954a2702), [Source](https://github.com/kaiaai/sample-apps/tree/master/tensorflow-mobile) - recognize live webcam images using TensorFlow Mobile and MobileNet
 21. Text to Speech, [Live Demo](https://kaia.ai/view-app/5a055af654d7fc08c068f3b9), [Source](https://github.com/kaiaai/sample-apps/tree/master/text-to-speech) - robot says "Hello"
 22. Remote Console, [Live Demo](https://kaia.ai/view-app/5aa78c8f1f0267133aedce1c), [Source](https://github.com/kaiaai/sample-apps/tree/master/remote-console) - exchange messages between robots, desktop and debug robot apps remotely using Kaia.ai stock messaging service
-23. Miscellaneous W3C API, [Live Demo](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05), [Source](https://github.com/kaiaai/sample-apps/tree/master/misc-w3c) - use vibration, query memory and storage sizes, number of logical CPUs, network connection type and speed
-24. Video Recorder, [Live Demo](https://kaia.ai/view-app/5bf7db1e219810765f711539), [Source](https://github.com/kaiaai/sample-apps/tree/master/video-recorder) - record, download video with or without audio; grab still frames
-25. Benchmark, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/benchmark) - benchmark TensorFlow Lite, TensorFlow Mobile performance
+23. Remote Debug, [Live Demo](https://kaia.ai/view-app/5bfcedb875527d379800bb86), [Source](https://github.com/kaiaai/sample-apps/tree/master/remote-debug) - debug robot apps remotely using Kaia.ai stock messaging service
+24. Miscellaneous W3C API, [Live Demo](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05), [Source](https://github.com/kaiaai/sample-apps/tree/master/misc-w3c) - use vibration, query memory and storage sizes, number of logical CPUs, network connection type and speed
+25. Video Recorder, [Live Demo](https://kaia.ai/view-app/5bf7db1e219810765f711539), [Source](https://github.com/kaiaai/sample-apps/tree/master/video-recorder) - record, download video with or without audio; grab still frames
+26. Benchmark, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/benchmark) - benchmark TensorFlow Lite, TensorFlow Mobile performance
 
 ## Instructions to Run Apps
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
