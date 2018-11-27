@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Remote Console</title>
+    <title>Remote Debug</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -22,8 +22,10 @@
 <body>
 <script type="module">
   import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.2/dist/kaia-services.mjs';
-  let messaging, sendButton, sendText;
+  let messaging;
+  let myConsole = {};
   const roomName = 'console';
+  const forwardConsoleText = 'Forward console.log';
 
   setup();
   
@@ -34,6 +36,19 @@
     } catch (e) {
       console.log('setup() catch() ', e);
     }
+  }
+  function setupGui() {
+    const forwardConsoleButton = document.getElementById('forwardConsoleButton');
+    forwardConsoleButton.innerHTML = forwardConsoleText;
+    forwardConsoleButton.onclick = () => {
+      if (forwardConsoleButton.innerHTML === forwardConsoleText) {
+        forwardConsoleButton.innerHTML = 'Disable console.log forwarding';
+        forwardConsole(true);
+      } else {
+        forwardConsoleButton.innerHTML = forwardConsoleText;
+        forwardConsole(false);
+      }
+    };
   }
   async function setupConsole() {
     try {
@@ -46,13 +61,45 @@
       messaging = await createMessaging({ io: io(), eventListener: onMessageEvent, rooms: roomName });
       markConnected();
       print('Connected to Kaia.ai messaging service');
-      
+
+      // optional
+      //forwardConsole();
     } catch (e) {
       print('Exception ' + JSON.stringify(e));
     } finally {
       print('setupMessaging() finished');
     }
   }
+  function forwardConsole(en) {
+    if (en) {
+      myConsole.log = console.log;
+      myConsole.error = console.error;
+      myConsole.warn = console.warn;
+      window.console.log = function () {
+        let msg = JSON.stringify(arguments);
+        messaging.send(msg);
+        print('Forwarding console.log ' + msg);
+        myConsole.log(arguments);
+      };
+      window.console.error = function () {
+        let msg = JSON.stringify(arguments);
+        messaging.send(msg);
+        print('Forwarding console.error ' + msg);
+        myConsole.error(arguments);
+      };
+      window.console.warn = function () {
+        let msg = JSON.stringify(arguments);
+        messaging.send(msg);
+        print('Forwarding console.warn ' + msg);
+        myConsole.warn(arguments);
+      };
+    } else {
+      console.log = myConsole.log;
+      console.error = myConsole.error;
+      console.warn = myConsole.warn;
+      myConsole = {};
+    }
+  };  
   function onMessageEvent(err, msg) {
     if (err) {
       print ('Error ' + err);
@@ -62,6 +109,11 @@
     switch (msg.event) {
       case 'message':
         print(msg.client + ' in room ' + msg.room + ' says ' + msg.message);
+        // evaluate and return result
+        let res = eval(msg.message);
+        res = typeof res === 'object' ? JSON.stringify(res) : res;
+        messaging.send(res);
+        print('Replying ' + res);
         break;
       case 'joined':
         print('  ' + msg.room + ' clients now are ' + msg.clients);
@@ -78,13 +130,6 @@
         print('Disconnected');
         break;
     }
-  }
-  function setupGui() {
-    // Need to do this when script type is module
-    // Use UMD lib version to avoid this
-    sendButton = document.getElementById('sendButton');
-    sendButton.onclick = sendMessage;
-    sendText = document.getElementById("sendText");
   }
   function sendMessage() {
     let msg = sendText.value;
@@ -120,14 +165,18 @@
         <p><i class="fa fa-times" id="connectedIcon"></i><span id="connectedText"> Not connected to Kaia.ai server</span></p>
       </div>
     </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div id="mydiv">Instructions:<br> (1) launch Remote Console on desktop<br> (2) type 2+2<br> (3) click Send button<br> (4) type <i>$('#mydiv').html('Hello')</i><br> (5) click Send</div>
+      </div>
+    </div>
     
     <div class="row">
       <div class="col-lg-12">
         <div class="form-group">
           <label for="log"> </label>
           <textarea class="form-control" rows="10" id="log" readonly></textarea>
-          <input class="form-control" id="sendText" placeholder="Enter text to send" value="Hello">
-          <button class="btn btn-primary btn-block" type="button" id="sendButton" disabled>Send</button>
+          <button class="btn btn-primary btn-block" type="button" id="forwardConsoleButton"></button>
         </div>
       </div>
     </div>  
