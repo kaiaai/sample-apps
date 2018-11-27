@@ -1,11 +1,17 @@
-# Messaging Demo App
-Exchange messages between your robots, desktop.
+# Remote Debug Demo App
+Debug robot apps remotely over WiFi/network from desktop.
+- using your desktop, log in to Kaia.ai and launch Remote Console
+- from Kaia.ai Android app, log in to Kaia.ai and launch Remote Debug
+- desktops Remote Console now acts as JavaScript browser console surrogate
+  - anything you type in your desktop's Remote Console app gets executed in robot app using eval()
+  - robot eval() results are sent back and displayed in desktop's Remote Console
+
 
 [![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
 ## Live Demo
-- [Sample app](https://kaia.ai/view-app/)
-- Sample app [source code](https://github.com/kaiaai/tree/master/messaging)
+- [Sample app](https://kaia.ai/view-app/5bfcedb875527d379800bb86)
+- Sample app [source code](https://github.com/kaiaai/tree/master/remote-debug)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
