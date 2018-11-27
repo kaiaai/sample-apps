@@ -21,7 +21,7 @@
   </head>
 <body>
 <script type="module">
-  import { createMessaging } from './kaia-services.mjs';
+  import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.1/dist/kaia-services.mjs';
   let messaging, sendButton, sendText;
   const roomName = 'console';
 
@@ -54,9 +54,29 @@
     }
   }
   function onMessageEvent(err, msg) {
-    if (!err && msg.event === 'message') {
-console.log(msg);
-      print(msg.client + ' in room ' + msg.room + ' says ' + msg.message);
+    if (err) {
+      print ('Error ' + err);
+      return;
+    }
+    
+    switch (msg.event) {
+      case 'message':
+        print(msg.client + ' in room ' + msg.room + ' says ' + msg.message);
+        break;
+      case 'joined':
+        print('  ' + msg.room + ' clients now are ' + msg.clients);
+        print(msg.client + ' joined room ' + msg.room);
+        break;
+      case 'left':
+        print('  ' + msg.room + ' clients now are ' + msg.clients);
+        print(msg.client + ' left room ' + msg.room);
+        break;
+      case 'reconnect':
+        print('Reconnected');
+        break;
+      case 'disconnect':
+        print('Disconnected');
+        break;
     }
   }
   function setupGui() {
@@ -71,7 +91,7 @@ console.log(msg);
     print('Sending to room ' + roomName + ': ' + msg);
     //sendText.value = '';
 
-    messaging.send(msg, roomName);
+    messaging.send(msg);
   }
   function check(id) {
     $(id).removeClass('fa-times').addClass('fa-check').css('background-color','green');
