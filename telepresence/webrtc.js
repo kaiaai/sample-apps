@@ -1,8 +1,8 @@
-var localVideo;
-var localStream;
-var remoteVideo;
-var peerConnection;
-var uuid;
+import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.2/dist/kaia-services.mjs';
+let localVideo, remoteVideo, localStream, peerConnection, uuid, messaging;
+const roomName = 'telepresence';
+
+pageReady();
 
 var peerConnectionConfig = {
   'iceServers': [
@@ -10,13 +10,16 @@ var peerConnectionConfig = {
     {'urls': 'stun:stun.l.google.com:19302'},
   ]
 };
-
-function pageReady() {
-  connectConsole();
-  uuid = createUUID();
-
+function setupGui() {
+  const startButton = document.getElementById('start');
+  startButton.onclick = () => start(true);
   localVideo = document.getElementById('localVideo');
   remoteVideo = document.getElementById('remoteVideo');
+}
+function pageReady() {
+  setupGui();  
+  connectMessaging();
+  uuid = createUUID();
 
   var constraints = {
     video: true,
@@ -50,7 +53,7 @@ function gotMessageFromServer(message) {
   if(!peerConnection) start(false);
 
   var signal = message;
-  console.log(signal);
+  //console.log(signal);
 
   // Ignore messages from ourself
   if(signal.uuid == uuid)
@@ -70,20 +73,20 @@ function gotMessageFromServer(message) {
 
 function gotIceCandidate(event) {
   if(event.candidate != null) {
-    window.kaia.online.sendMsg({'ice': event.candidate, 'uuid': uuid});
+    messaging.send({'ice': event.candidate, 'uuid': uuid});
   }
 }
 
 function createdDescription(description) {
-  console.log('got description');
+  //console.log('got description');
 
   peerConnection.setLocalDescription(description).then(function() {
-    window.kaia.online.sendMsg({'sdp': peerConnection.localDescription, 'uuid': uuid});
+    messaging.send({'sdp': peerConnection.localDescription, 'uuid': uuid});
   }).catch(errorHandler);
 }
 
 function gotRemoteStream(event) {
-  console.log('got remote stream');
+  //console.log('got remote stream');
   remoteVideo.srcObject = event.streams[0];
 }
 
@@ -101,21 +104,18 @@ function createUUID() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-function connectConsole() {
-  console.log('Connecting to remote console');
+async function connectMessaging() {
+  //console.log('Connecting to messaging service');
   try {
-    window.kaia.online.on = onWebSocketEvent;
-    window.kaia.online.init();
-  }
-  catch (e) {
+    messaging = await createMessaging({ io: io(), eventListener: onMessageEvent, rooms: roomName });
+  } catch (e) {
     console.log('Exception ' + JSON.stringify(e));
-  }
-  finally {
-    console.log('connectConsole() finished');
+  } finally {
+    //console.log('connectMessaging() finished');
   }
 }
 
-function onWebSocketEvent(eventType, arg) {
-  if (eventType === 'kaia.room.message')
-    gotMessageFromServer(arg.msg);
+function onMessageEvent(err, msg) {
+  if (!err && msg.event === 'message')
+    gotMessageFromServer(msg.message);
 }
