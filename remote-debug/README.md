@@ -23,7 +23,7 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 6. Choose a robot app to launch
 7. Optionally: click the heart icon to pin the robot app to your launch screen
 
-## Sensors API Overview
+## Remote Debug Code Overview
 ```js
 // ...
 ````
