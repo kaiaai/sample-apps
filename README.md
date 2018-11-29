@@ -26,7 +26,8 @@ Sample robot apps illustrating Kaia.ai platform API, robot app development and p
 23. Remote Debug, [Live Demo](https://kaia.ai/view-app/5bfcedb875527d379800bb86), [Source](https://github.com/kaiaai/sample-apps/tree/master/remote-debug) - debug robot apps remotely using Kaia.ai stock messaging service
 24. Miscellaneous W3C API, [Live Demo](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05), [Source](https://github.com/kaiaai/sample-apps/tree/master/misc-w3c) - use vibration, query memory and storage sizes, number of logical CPUs, network connection type and speed
 25. Video Recorder, [Live Demo](https://kaia.ai/view-app/5bf7db1e219810765f711539), [Source](https://github.com/kaiaai/sample-apps/tree/master/video-recorder) - record, download video with or without audio; grab still frames
-26. Benchmark, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/benchmark) - benchmark TensorFlow Lite, TensorFlow Mobile performance
+26. WebRTC Messaging, [Live Demo](https://kaia.ai/view-app/5bf910b2b7f0731e286bbccc), [Source](https://github.com/kaiaai/sample-apps/tree/master/webrtc-messaging) - peer-to-peer (e.g. bot-to-desktop) messaging, also used for gamepad
+27. Benchmark, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/benchmark) - benchmark TensorFlow Lite, TensorFlow Mobile performance
 
 ## Instructions to Run Apps
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
