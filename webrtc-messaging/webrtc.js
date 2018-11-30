@@ -1,14 +1,8 @@
 import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.2/dist/kaia-services.mjs';
-let peerConnection, uuid, messaging, name, emoji, dataChannel;
+let peerConnection, uuid, messaging, name, dataChannel;
 const roomName = 'telepresence';
 let webRtcStarted = false;
 let isCaller = false;
-const possibleEmojis = [
-  '🐀','🐁','🐭','🐹','🐂','🐃','🐄','🐮','🐅','🐆','🐯','🐇','🐐','🐑','🐏','🐴',
-  '🐎','🐱','🐈','🐰','🐓','🐔','🐤','🐣','🐥','🐦','🐧','🐘','🐩','🐕','🐷','🐖',
-  '🐗','🐫','🐪','🐶','🐺','🐻','🐨','🐼','🐵','🙈','🙉','🙊','🐒','🐉','🐲','🐊',
-  '🐍','🐢','🐸','🐋','🐳','🐬','🐙','🐟','🐠','🐡','🐚','🐌','🐛','🐜','🐝','🐞',
-];
 const peerConnectionConfig = {
   'iceServers': [
     {'urls': 'stun:stun.stunprotocol.org:3478'},
@@ -31,8 +25,7 @@ function setupGui() {
 
     const data = {
       name,
-      content: value,
-      emoji,
+      content: value
     };
 
     const json = JSON.stringify(data);
@@ -44,7 +37,6 @@ function setupGui() {
 
 function pageReady() {
   name = prompt("What's your name?");
-  emoji = randomEmoji();
 
   setupGui();  
   connectMessaging();
@@ -169,17 +161,11 @@ function onMessageEvent(err, msg) {
     }
 }
 
-function randomEmoji() {
-  var randomIndex = Math.floor(Math.random() * possibleEmojis.length);
-  return possibleEmojis[randomIndex];
-}
-
 function insertMessageToDOM(options, isFromMe) {
   const template = document.querySelector('template[data-template="message"]');
   const nameEl = template.content.querySelector('.message__name');
-  if (options.emoji || options.name) {
-    nameEl.innerText = options.emoji + ' ' + options.name;
-  }
+  if (options.name)
+    nameEl.innerText = options.name;
   template.content.querySelector('.message__bubble').innerText = options.content;
   const clone = document.importNode(template.content, true);
   const messageEl = clone.querySelector('.message');
