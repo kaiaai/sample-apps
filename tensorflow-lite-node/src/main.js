@@ -1,5 +1,5 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
-import { createTensorFlowLite } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
+import { createTensorFlowLite } from 'kaia.mjs';
 
 const MODEL_FILE_NAME = 'graph.lite';
 const LABEL_FILE_NAME = 'imagenet_1000_labels.txt';
@@ -18,7 +18,7 @@ async function fetchAndCache(fileName, dataType) {
   }
 
   console.log('Downloading ' + fileName);
-      
+
   let response = await fetch(APP_PATH + fileName);
   switch (dataType) {
     case 'arraybuffer':
@@ -36,17 +36,18 @@ async function fetchAndCache(fileName, dataType) {
     default:
       throw('Invalid data type');
     }
-      
+
     await set(fileName, data);
     console.log('Stored data, data.size=' + (data.size || data.length));
     return data;
 }
 
 async function setup() {
-  
+
   try {
     let statusDiv = document.getElementById('status');
     statusDiv.innerHTML = 'Loading model ...';
+    let fpsDiv = document.getElementById('fps');
 
     let model = await fetchAndCache(MODEL_FILE_NAME, 'arraybuffer');
 
@@ -70,6 +71,7 @@ async function setup() {
       statusDiv.innerText = '';
       let img = grabFrame();
       const size = Math.min(canvas.width, canvas.height);
+      const t0 = performance.now();
       let result = await tfLite.run([img],
         {input: [
           {width: size,
@@ -85,10 +87,12 @@ async function setup() {
            size: [1, 1001]
           }]
         });
+      const runTimeMs = performance.now() - t0;
       let probabilities = result.output[0][0];
       let idxOfMax = indexOfMax(probabilities);
       let max = probabilities[idxOfMax];
       statusDiv.innerText = labels[idxOfMax] + ' ' + Number.parseFloat(max*100).toFixed(0) + '%';
+      fpsDiv.innerText = runTimeMs.toFixed(2) + 'ms, ' + (1000.0/runTimeMs).toFixed(2) + 'FPS';
     });
   } catch (e) {
     console.log('setup() catch() ', e);

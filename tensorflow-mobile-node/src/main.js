@@ -1,5 +1,5 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
-import { createTensorFlowMobile } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
+import { createTensorFlowMobile } from 'kaia.mjs';
 
 const MODEL_FILE_NAME = 'mobilenet_v1_224_graph.pb';
 const LABEL_FILE_NAME = 'imagenet_1000_labels.txt';

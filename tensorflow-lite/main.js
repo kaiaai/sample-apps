@@ -47,6 +47,7 @@ async function setup() {
   try {
     let statusDiv = document.getElementById('status');
     statusDiv.innerHTML = 'Loading model ...';
+    let fpsDiv = document.getElementById('fps');
 
     let model = await fetchAndCache(MODEL_FILE_NAME, 'arraybuffer');
 
@@ -70,6 +71,7 @@ async function setup() {
       statusDiv.innerText = '';
       let img = grabFrame();
       const size = Math.min(canvas.width, canvas.height);
+      const t0 = performance.now();
       let result = await tfLite.run([img],
         {input: [
           {width: size,
@@ -85,10 +87,12 @@ async function setup() {
            size: [1, 1001]
           }]
         });
+      const runTimeMs = performance.now() - t0;
       let probabilities = result.output[0][0];
       let idxOfMax = indexOfMax(probabilities);
       let max = probabilities[idxOfMax];
       statusDiv.innerText = labels[idxOfMax] + ' ' + Number.parseFloat(max*100).toFixed(0) + '%';
+      fpsDiv.innerText = runTimeMs.toFixed(2) + 'ms, ' + (1000.0/runTimeMs).toFixed(2) + 'FPS';
     });
   } catch (e) {
     console.log('setup() catch() ', e);
