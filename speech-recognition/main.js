@@ -1,5 +1,5 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
-import { createPocketSphinx } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.2.0/dist/kaia.mjs';
+import { createPocketSphinx } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
 
 const MODEL_FILE_NAME = 'pocketsphinx-model-en-us.zip';
 const SEARCHES_FILE_NAME = 'searches.zip';
