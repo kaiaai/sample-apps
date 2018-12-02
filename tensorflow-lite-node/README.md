@@ -35,23 +35,10 @@ To make a custom TfLite model please follow a detailed [Google Codelabs TFLite](
 ## TensorFlow Lite API Overview
 ```js
 let tfLite = await createTfLite(model); // load model
-...
-let result = await tfLite.run([img], // classify image
-  {input: [
-    {width: size,
-     height: size,
-     channels: 4,
-     batchSize: 1,
-     imageMean: 128.0,
-     imageStd: 128.0,
-     type: 'colorBitmapAsFloat'
-    }],
-   output: [
-    {type: 'float',
-     size: [1, 1001],
-    }]
-  });
+let result = await tfLite.run([img], {  // classify image
+  input: [{width: size, height: size, channels: 4, batchSize: 1, imageMean: 128.0, imageStd: 128.0,
+           type: 'colorBitmapAsFloat'}],
+  output:[{type: 'float', size: [1, 1001]}]
+});
 let probabilities = result.output[0][0];
-...
-tfLite.close(); // optional
 ````
