@@ -29,20 +29,10 @@ To make a custom TfLite model please follow a detailed [Google Codelabs TFLite](
 ## TensorFlow Mobile API Overview
 ```js
 let tfMobile = await createTfMobile(model); // load model
-...
-let result = await tfMobile.run([img], // classify image
-  {feed: [
-    {width: size,
-     height: size,
-     inputName: 'input',
-     imageMean: 128.0,
-     imageStd: 128.0,
-     feedType: 'colorBitmapAsFloat'
-    }],
-   run: {enableStats: false},
-   fetch: {outputNames: ['MobilenetV1/Predictions/Softmax'], outputTypes: ['float']}
-  });
+let result = await tfMobile.run([img], {    // classify image
+  feed: [{width: size, height: size, inputName: 'input', imageMean: 128.0, imageStd: 128.0, feedType: 'colorBitmapAsFloat'}],
+  run: {enableStats: false},
+  fetch: {outputNames: ['MobilenetV1/Predictions/Softmax'], outputTypes: ['float']}
+});
 let probabilities = result.output[0];
-...
-tfMobile.close(); // optional
 ```
