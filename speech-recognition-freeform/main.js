@@ -1,4 +1,4 @@
-import { createAndroidSpeechRecognizer } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.2.0/dist/kaia.mjs';
+import { createAndroidSpeechRecognizer } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
 
 let statusDiv;
 let isListening = false;
