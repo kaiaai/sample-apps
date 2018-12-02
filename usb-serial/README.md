@@ -28,25 +28,11 @@ Expect this API to be eventually deprecated in favor of WebUSB
 
 ## Serial API Overview
 ```js
-function setup() {
-  // ...
-  serial = await createSerial();
-  serial.setEventListener(onSerialEvent);
-  // ...
-  serial.sendSerialMsg('Hello Arduino!\n');
-}
+serial = await createSerial({ baudRate: 115200, eventListener: onSerialEvent });
+serial.write('Hello Arduino!\n')
 
 function onSerialEvent(err, data) {
-  console.log(data);
-  if (data.event === 'received') {
-     // parse received message
-     parseMessageFromRobot(data.message);
-  }
-}
-
-function sendSerialMsg(msg) {
-  let res = serial.write({ 'message': msg });
-  if (!res.success)
-    console.log(res);
+  if (!err && data.event === 'received')
+     console.log(data.message);
 }
 ````
