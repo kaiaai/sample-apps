@@ -1,5 +1,5 @@
 import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
-import { createTfLite } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.0.2/dist/kaia.mjs';
+import { createTensorFlowLite } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
 
 const MODEL_FILE_NAME = 'graph.lite';
 const LABEL_FILE_NAME = 'imagenet_1000_labels.txt';
@@ -18,7 +18,7 @@ async function fetchAndCache(fileName, dataType) {
   }
 
   console.log('Downloading ' + fileName);
-
+      
   let response = await fetch(APP_PATH + fileName);
   switch (dataType) {
     case 'arraybuffer':
@@ -36,14 +36,14 @@ async function fetchAndCache(fileName, dataType) {
     default:
       throw('Invalid data type');
     }
-
+      
     await set(fileName, data);
     console.log('Stored data, data.size=' + (data.size || data.length));
     return data;
 }
 
 async function setup() {
-
+  
   try {
     let statusDiv = document.getElementById('status');
     statusDiv.innerHTML = 'Loading model ...';
@@ -54,7 +54,7 @@ async function setup() {
     labels = JSON.parse(txt).labels;
 
     statusDiv.innerText = 'Done loading model';
-    tfLite = await createTfLite(model);
+    tfLite = await createTensorFlowLite(model);
     statusDiv.innerText = 'TF Lite initialized';
     
     await setupWebcam();
@@ -82,7 +82,7 @@ async function setup() {
           }],
          output: [
           {type: 'float',
-           size: [1, 1001],
+           size: [1, 1001]
           }]
         });
       let probabilities = result.output[0][0];
