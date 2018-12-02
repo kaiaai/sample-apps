@@ -1,6 +1,8 @@
 # Kaia.ai Sample Apps
 Sample robot apps illustrating Kaia.ai platform API, robot app development and publishing to Kaia.ai robot App Store
 
+We have not yet launched the platform. For launch announcement please follow us on [Facebook](https://www.facebook.com/kaiaai/).
+
 1. Basic Locomotion, [Live Demo](https://kaia.ai/view-app/5a9a4e903e77387f46e5fb01), [Source](https://github.com/kaiaai/sample-apps/tree/master/basic-locomotion) - make your robot move around
 2. Battery, [Live Demo](https://kaia.ai/view-app/5bd549fd96bf4d605ba2500d), [Source](https://github.com/kaiaai/sample-apps/tree/master/battery) - monitor battery level
 3. Device Settings, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/device-settings) - get, set device settings
