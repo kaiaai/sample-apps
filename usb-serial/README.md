@@ -23,9 +23,6 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 - upload all repository files into the new sub-folder
 - navigate to My Apps, click New App, fill out and submit app form to publish your new app
 
-## Deprecation
-Expect this API to be eventually deprecated in favor of WebUSB
-
 ## Serial API Overview
 ```js
 serial = await createSerial({ baudRate: 115200, eventListener: onSerialEvent });
@@ -36,3 +33,6 @@ function onSerialEvent(err, data) {
      console.log(data.message);
 }
 ````
+
+## Deprecation
+Expect Serial API to be eventually deprecated in favor of WebUSB
