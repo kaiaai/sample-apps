@@ -1,5 +1,5 @@
 # TensorFlow Lite Demo App
-Recognize live webcam images using TensorFlow Lite and MobileNet.
+Recognize live webcam images using TensorFlow Lite and MobileNet. Benchmark recognition time, FPS.
 
 [![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
