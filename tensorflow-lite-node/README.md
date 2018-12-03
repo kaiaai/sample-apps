@@ -32,9 +32,9 @@ After that:
 ## Customizing NN Model
 To make a custom TfLite model please follow a detailed [Google Codelabs TFLite](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets-2-tflite/index.html#0) tutorial
 
-## TensorFlow Lite API Overview
+## TensorFlowLite API Overview
 ```js
-let tfLite = await createTfLite(model); // load model
+let tfLite = await createTensorFlowLite(model); // load model
 let result = await tfLite.run([img], {  // classify image
   input: [{width: size, height: size, channels: 4, batchSize: 1, imageMean: 128.0, imageStd: 128.0,
            type: 'colorBitmapAsFloat'}],
