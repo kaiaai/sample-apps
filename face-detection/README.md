@@ -25,45 +25,23 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 
 ## Multi-Detection API Overview
 The API detects faces, detects and recognizes barcodes, detects text blocks and recognizes text.
-````
-let multiDet;
-async function multidetInit() {
-  multiDet = await createAndroidMultiDetector({
-    "face"          : {
-      "enableDetection" : true,
-      "computeLandmarks" : false,
-      "useFastSpeed" : true,
-      "prominentFacesOnly" : true,
-      "computeClassifications" : false,
-      "minFaceSize" : 0.2,
-      "tracking" : true },
-    "barcodes" : {"enableDetection" : false},
-    "text" : {"enableDetection" : false}
-  });
-
-  multiDet.setEventListener(function(err, res) {
-  if (err)
-      setStatus('Error detecting faces');
-    else {
-      setFaceDetActive(true);
-      reactToFaces(res);
-    }
-  });
-}
-async function multidetDetect() {
-  let imageURI = grabFrame();
-  await multiDet.detect(imageURI);
-}
-window.setInterval(multidetDetect, 2000);
+```js
+let multiDet = await createAndroidMultiDetector({
+  "face" : {"enableDetection" : true, "computeLandmarks" : false, "useFastSpeed" : true, "tracking" : true,
+            "prominentFacesOnly" : true, "computeClassifications" : false, "minFaceSize" : 0.2},
+  "barcodes" : {"enableDetection" : false},
+  "text" : {"enableDetection" : false},
+  eventListener: (err, res) => { if (!err) reactToFaces(res); }
+});
+let imageURI = grabFrame();
+await multiDet.detect(imageURI);
 
 function reactToFaces(data) {
   if (data.faces.length == 0) {
-    setStatus('I don\'t see any faces');
-    return;
+    console.log('I don\'t see any faces'); return;
   }
   if (data.faces.length > 1)
-    setStatus('I see ' + data.faces.length + ' faces');
-    
+    console.log('I see ' + data.faces.length + ' faces');    
   let face = data.faces[0];
   let left_x = face.left;
   let width = face.width;
