@@ -1,5 +1,5 @@
-import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
-import { createTensorFlowLite } from 'kaia.mjs';
+import { get, set } from 'idb-keyval';
+import { createTensorFlowLite } from 'kaia.js';
 
 const MODEL_FILE_NAME = 'graph.lite';
 const LABEL_FILE_NAME = 'imagenet_1000_labels.txt';
