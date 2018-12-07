@@ -1,6 +1,6 @@
-import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.2/dist/kaia-services.mjs';
+import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.3/dist/kaia-services.mjs';
 let peerConnection, uuid, messaging, name, dataChannel;
-const roomName = 'telepresence';
+const roomName = 'webrtc-messaging';
 let webRtcStarted = false;
 let isCaller = false;
 const peerConnectionConfig = {
