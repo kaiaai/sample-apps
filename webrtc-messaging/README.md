@@ -28,5 +28,22 @@ Kaia.ai robot apps run on Android smartphones. To run the sample app:
 
 ## WebRTC Messaging Code Overview
 ```js
-// todo
+let messaging = await createMessaging({ io: io(), rooms: roomName });
+let webrtc = await createWebRTCHelper({ messaging: messaging, eventListener: onWebRTCEvent, room: roomName });
+// Peer has joined 
+webrtc.send('Hello');
+ 
+function onWebRTCEvent(err, msg) {
+  switch (msg.event) {
+    case 'dataChannelMessage':
+      console.log('Received message: ' + JSON.parse(event.data));
+      break;
+    case 'dataChannelOpen':
+    case 'dataChannelClose':
+      console.log('Data channel is ' + msg.dataChannel.readyState));
+      break;
+    case 'dataChannelError':
+      console.log('Data channel error: ' + msg.err); 
+  }
+}
 ````
