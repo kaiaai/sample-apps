@@ -5,7 +5,7 @@ We have not yet launched the platform. For launch announcement please follow us 
 
 1. Basic Locomotion, [Live Demo](https://kaia.ai/view-app/5a9a4e903e77387f46e5fb01), [Source](https://github.com/kaiaai/sample-apps/tree/master/basic-locomotion) - make your robot move around
 2. Battery, [Live Demo](https://kaia.ai/view-app/5bd549fd96bf4d605ba2500d), [Source](https://github.com/kaiaai/sample-apps/tree/master/battery) - monitor battery level
-3. Device Settings, Live Demo, [Source](https://github.com/kaiaai/sample-apps/tree/master/device-settings) - get, set device settings
+3. Device Settings, [Live Demo](https://kaia.ai/view-app/5bf3b412a444a76d57bd2899), [Source](https://github.com/kaiaai/sample-apps/tree/master/device-settings) - get, set device settings
 4. Face Animation, [Live Demo](https://kaia.ai/view-app/5a0556a554d7fc08c068f3b7), [Source](https://github.com/kaiaai/sample-apps/tree/master/face-animation) - animate robot's face
 5. Face Detection, [Live Demo](https://kaia.ai/view-app/5b8b8336c38e3b3579ca986f), [Source](https://github.com/kaiaai/sample-apps/tree/master/face-detection) - robot detect face using live webcam, turns to face the human
 6. Gamepad, [Live Demo](https://kaia.ai/view-app/5c00fafc4467f707dcbeab7d), [Source](https://github.com/kaiaai/sample-apps/tree/master/gamepad) - virtual gamepad to control your robot
