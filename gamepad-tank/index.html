@@ -1,139 +1,135 @@
-<!DOCTYPE html>
 <html>
-   <head>
-      <title> Limit Stick-Travel Demo with Stationary Base </title>
-   </head>
-   <body>
-      <div id="help" style="position:fixed; left:40%; top:4%; color:grey;">
-        <a href="https://github.com/jeromeetienne/virtualjoystick.js">virtualjoystick.js</a> Limit Stick-Travel Demo with Stationary Base
-      </div>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		<style>
+		body {
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			background-color: #BBB;
+		}
+		#info {
+			position	: absolute;
+			top		: 0px;
+			width		: 100%;
+			padding		: 5px;
+			text-align	: center;
+		}
+		#info a {
+			color		: #66F;
+			text-decoration	: none;
+		}
+		#info a:hover {
+			text-decoration	: underline;
+		}
+		#container {
+			width		: 100%;
+			height		: 100%;
+			overflow	: hidden;
+			padding		: 0;
+			margin		: 0;
+			-webkit-user-select	: none;
+			-moz-user-select	: none;
+		}
+		</style>
+	</head>
+  <body>
+    <div id="container"></div>
+    <div id="info">
+      <a href="http://learningthreejs.com/blog/2011/12/26/let-s-make-a-3d-game-virtual-joystick/" target="_blank">VirtualJoystick.js</a>
+      A library javascript to provide a virtual joystick on touchscreen.
+      -
+      inspired by this
+      <a href="http://sebleedelisle.com/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/">post</a>
+      from
+      <a href="http://sebleedelisle.com/">seb.ly</a>
+      <br/>
+      Touch the screen and move
+      -
+      works with mouse too as debug
+      <br/>
+      <span id="result1"></span>
+      <br/>
+      <span id="result2"></span>
+    </div> 
 
-      <div id="debug1" style="position:fixed; left:5%; top:4%; color:grey;">
-         Debug Info 
-      </div>
+    <script src="virtualjoystick.js"></script>
+    <script>
+      console.log("touchscreen is", VirtualJoystick.touchScreenAvailable() ? "available" : "not available");
+      // 
+      var joystick1	= new VirtualJoystick({
+        container	: container,
+        strokeStyle	: 'cyan',
+        limitStickTravel: true,
+        mouseSupport	: true,
+        stickRadius	: 120,
+        stationaryBase	: true,
+        baseX		: window.innerWidth*1/4,
+        baseY		: window.innerHeight/2,
+        disableHorizontal : true
+      });
+      joystick1.addEventListener('touchStartValidation', function(event){
+        var touch	= event.changedTouches[0];
+        return touch.pageX < window.innerWidth/2;
+      });
+      joystick1.addEventListener('mouseStartValidation', function(event){
+        return event.clientX < window.innerWidth/2;
+      });
+      joystick1.addEventListener('touchStart', function(){
+        console.log('fire touch 1')
+      })
+      joystick1.addEventListener('mouseStart', function(){
+        console.log('fire mouse 1')
+      })
 
-      <div id="debug2" style="position:fixed; left:5%; top:8%; color:grey;">
-         Debug Info 
-      </div>
+      // one on the right of the screen
+      var joystick2	= new VirtualJoystick({
+        container	: container,
+        strokeStyle	: 'orange',
+        limitStickTravel: true,
+        mouseSupport	: true,
+        stickRadius	: 120,
+        stationaryBase	: true,
+        baseX		: window.innerWidth*3/4,
+        baseY		: window.innerHeight/2,
+        disableHorizontal : true
+      });
+      joystick2.addEventListener('touchStartValidation', function(event){
+        var touch	= event.changedTouches[0];
+        return touch.pageX >= window.innerWidth/2;
+      });
+      joystick2.addEventListener('mouseStartValidation', function(event){
+        return event.clientX >= window.innerWidth/2;
+      });
+      joystick2.addEventListener('touchStart', function(){
+        console.log('fire touch 2')
+      })
+      joystick2.addEventListener('mouseStart', function(){
+        console.log('fire mouse 2')
+      })
 
-      <script src="https://threejs.org/build/three.min.js"></script>
-      <script src="https://jeromeetienne.github.io/threex.keyboardstate/threex.keyboardstate.js"></script>
-      <script src="./virtualjoystick.js"></script>
-      <script>
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-var clock = new THREE.Clock();
+			setInterval(function(){
+				var outputEl	= document.getElementById('result1');
+				outputEl.innerHTML	= '<b>Left Joystick:</b> '
+					+ ' dx:'+joystick1.deltaX()
+					+ ' dy:'+joystick1.deltaY()
+					+ (joystick1.right()	? ' right'	: '')
+					+ (joystick1.up()	? ' up'		: '')
+					+ (joystick1.left()	? ' left'	: '')
+					+ (joystick1.down()	? ' down' 	: '');
 
-var keyboard = new THREEx.KeyboardState();
-var joystick = new VirtualJoystick({
-                      mouseSupport: true,
-		      stationaryBase: true,
-                      baseX: 200,
-                      baseY: 200,
-		      limitStickTravel: true,
-		      stickRadius: 50
-                   });
+				var outputEl	= document.getElementById('result2');
+				outputEl.innerHTML	= '<b>Right Joystick:</b> '
+					+ ' dx:'+joystick2.deltaX()
+					+ ' dy:'+joystick2.deltaY()
+					+ (joystick2.right()	? ' right'	: '')
+					+ (joystick2.up()	? ' up'		: '')
+					+ (joystick2.left()	? ' left'	: '')
+					+ (joystick2.down()	? ' down' 	: '')	
+      }, 1/10 * 1000);
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-window.addEventListener('resize', onWindowResize, false); 
-
-var cubeGeometry = new THREE.CubeGeometry(20,20,20);
-var cubeMaterial = new THREE.MeshLambertMaterial({ color: 'rgb(0,255,0)' });
-var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-scene.add(cube);
-
-var sphereGeometry = new THREE.SphereGeometry(5);
-var sphereMaterial = new THREE.MeshBasicMaterial({ color: 'rgb(255,255,0)' });
-var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-scene.add(sphere);
-
-var light = new THREE.PointLight( 'rgb(255,255,255)', 1, 0 );
-scene.add(light);
-
-var sunRiseFlag = true;
-var sunHeight = 0;
-var frameTime = 0;
-
-camera.position.y = 40;
-camera.position.z = 160;
-
-cube.rotation.x = 0.4;
-cube.rotation.y = 0.6;
-
-var debugText1 = document.getElementById("debug1");
-var debugText2 = document.getElementById("debug2");
-
-animate();
-
-function animate(){
-   
-   requestAnimationFrame(animate);
-
-   frameTime = clock.getDelta();
-
-   if(sunRiseFlag == true){
-      sunHeight = sunHeight + 60 * frameTime;
-   }
-
-   if(sunRiseFlag == false){
-      sunHeight = sunHeight - 60 * frameTime;
-   }
-
-   if(sunHeight > 150){
-      sunHeight = 150;
-      sunRiseFlag = false;
-   }
-
-   if(sunHeight < 0){
-      sunHeight = 0;
-      sunRiseFlag = true;
-   }
-
-   light.position.set(50,sunHeight,50);
-   sphere.position = light.position;
-
-   
-   if( keyboard.pressed("D") ){
- cube.position.x = cube.position.x + 60 * frameTime;
-   }
-   if( keyboard.pressed("A") ){
- cube.position.x = cube.position.x - 60 * frameTime;
-   }
-   if( keyboard.pressed("W") ){
- cube.position.y = cube.position.y + 60 * frameTime;
-   }
-   if( keyboard.pressed("S") ){
- cube.position.y = cube.position.y - 60 * frameTime;
-   }
-
-   if( joystick.right() ){
- cube.position.x = cube.position.x + 60 * frameTime;    
-   }
-   if( joystick.left() ){
- cube.position.x = cube.position.x - 60 * frameTime;     
-   }
-   if( joystick.up() ){
- cube.position.y = cube.position.y + 60 * frameTime;       
-   }
-   if( joystick.down() ){
- cube.position.y = cube.position.y - 60 * frameTime;
-   }
-
-   renderer.render( scene, camera );
-   
-   debugText1.innerHTML = "Cube position X: " + cube.position.x.toFixed(1);
-   debugText2.innerHTML = "Cube position Y: " + cube.position.y.toFixed(1);
-   
-}
-
-
-function onWindowResize(){
-   camera.aspect = window.innerWidth / window.innerHeight;
-   camera.updateProjectionMatrix();
-   renderer.setSize( window.innerWidth, window.innerHeight );   
-}
-      </script>     
-   </body>
+    </script>
+  </body>
 </html>
