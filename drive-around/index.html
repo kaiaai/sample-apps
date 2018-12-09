@@ -12,7 +12,7 @@
       import { createDeviceSettings, createSerial } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
       import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.3/dist/kaia-services.mjs';
       import { createWebRTCHelper } from 'https://cdn.jsdelivr.net/npm/kaia-utils.js@0.1.0/dist/kaia-utils.mjs';
-      let messaging, serial, webrtc;
+      let serial, webrtc;
       const roomName = 'gamepad';
 
       const status = document.getElementById('status');
@@ -25,9 +25,8 @@
         setStatus('Launch gamepad app');
         return createMessaging({ io: io(), rooms: roomName });
       }).then(res => {
-        messaging = res;
         setStatus('Waiting for gamepad app connection');
-        return createWebRTCHelper({ messaging: messaging, eventListener: onWebRTCEvent, room: roomName });
+        return createWebRTCHelper({ messaging: res, eventListener: onWebRTCEvent, room: roomName });
       }).then(res => {
         webrtc = res;
         setStatus('Gamepad connected');
@@ -48,9 +47,9 @@
             const speed = JSON.parse(msg.data.data);
             speed.left = speed.left / 100.0;
             speed.right = speed.right / 100.0;
-            let msg = 'L' + speedToHex(speed.left) + ' R' + speedToHex(speed.right) + '\n';            
-console.log(msg);
-            serial.write(msg);
+            const cmd = 'L' + speedToHex(speed.left) + ' R' + speedToHex(speed.right) + '\n';            
+            serial.write(cmd);
+            setStatus(speed.left + ', ' + speed.right);
             break;
         }
       }      
