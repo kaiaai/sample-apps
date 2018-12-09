@@ -5,7 +5,7 @@ Robot detects face using live webcam and turns automatically to face the human
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5b8b8336c38e3b3579ca986f)
-- Sample app [source code](https://github.com/kaiaai/tree/master/face-detection)
+- Sample app [source code](https://github.com/kaiaai/sample-apps/tree/master/face-detection)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
