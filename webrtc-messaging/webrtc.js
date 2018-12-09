@@ -37,7 +37,7 @@ function setupGui() {
 function onWebRTCEvent(err, msg) {
   switch (msg.event) {
     case 'dataChannelMessage':
-      insertMessageToDOM(JSON.parse(event.data), false);
+      insertMessageToDOM(JSON.parse(msg.data.data), false);
       break;
     case 'dataChannelOpen':
     case 'dataChannelClose':
@@ -45,6 +45,7 @@ function onWebRTCEvent(err, msg) {
       break;
     case 'dataChannelError':
       insertMessageToDOM({content: 'Data channel error: ' + msg.err}); 
+      break;
   }
 }
 
