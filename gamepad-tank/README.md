@@ -5,7 +5,7 @@ Virtual tank-style gamepad to control your robot manually. There are two levers,
 
 ## Live Demo
 - [Sample app](https://kaia.ai/view-app/5c00faad4467f707dcbeab7b)
-- Sample app [source code](https://github.com/kaiaai/tree/master/gamepad-tank)
+- Sample app [source code](https://github.com/kaiaai/sample-apps/tree/master/gamepad-tank)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
