@@ -1,5 +1,5 @@
 # Drive Around Demo App
-Drive robot using tank-style gamepad [app](https://kaia.ai/view-app/5c00faad4467f707dcbeab7b) [(source)](https://github.com/kaiaai/sample-apps/tree/master/gamepad-tank) or joystick-style control app (source).
+Drive robot using tank-style gamepad manual control [app](https://kaia.ai/view-app/5c00faad4467f707dcbeab7b) [(source)](https://github.com/kaiaai/sample-apps/tree/master/gamepad-tank) or joystick-style manual control app (source).
 
 [![Deploy](https://www.oomwoo.com/wp-content/uploads/2018/11/deploy.png)](https://kaia.ai/deploy)
 
