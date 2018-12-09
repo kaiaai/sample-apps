@@ -34,7 +34,7 @@
       async function setup() {
         try {
           setupGui();
-          createDeviceSettings({ 'screenOrientationLock': true, 'fullScreen': true, 'wakeLock': true });          
+          createDeviceSettings({ screenOrientationLock: true, fullScreen: true, wakeLock: true });          
           startVideo();
           multidetInit();
           serial = await createSerial({ baudRate: 115200 });
