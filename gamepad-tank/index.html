@@ -29,7 +29,7 @@
       import { createDeviceSettings } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
       import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.3/dist/kaia-services.mjs';
       import { createWebRTCHelper } from 'https://cdn.jsdelivr.net/npm/kaia-utils.js@0.1.0/dist/kaia-utils.mjs';
-      let messaging, webrtc, dataLeft, dataRight, distLeft, distRight, touchLeft = false, touchRight = false;
+      let webrtc, dataLeft, dataRight, distLeft, distRight, touchLeft = false, touchRight = false;
       const roomName = 'gamepad';
       const periodMs = 200;
       const joysticks = {
@@ -67,8 +67,7 @@
       joystickRight.on('move', (evt, data) => dataRight = data ).on('start', () => touchRight = true ).on('end', () => touchRight = false );
       sendCoords();
       createMessaging({ io: io(), rooms: roomName }).then(res => {
-        messaging = res;
-        return createWebRTCHelper({ messaging: messaging, eventListener: onWebRTCEvent, room: roomName });
+        return createWebRTCHelper({ messaging: res, eventListener: onWebRTCEvent, room: roomName });
       }).then(res => {
         webrtc = res;
         document.body.style.backgroundColor = "black"
