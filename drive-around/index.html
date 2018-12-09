@@ -1,282 +1,66 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Face Detect</title>
+    <title>Drive Around</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-    <style>
-      i.fa {
-        display: inline-block;
-        border-radius: 60px;
-        box-shadow: 0px 0px 2px #888;
-        padding: 0.5em 0.6em;
-        background-color: #ffbb33;
-        color: white;
-    }
-    </style>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
-  <body>
+  <body bgcolor="blue">
+    <div id="status" style="color:white">Plug in USB cable</div>
     <script src="/socket.io/socket.io.js"></script>    
     <script type="module">
-      import { createAndroidMultiDetector, createDeviceSettings, createSerial } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
-      import { createScout } from 'https://cdn.jsdelivr.net/npm/kaia-scout.js@0.1.0/dist/kaia-scout.mjs';
+      import { createDeviceSettings, createSerial } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
       import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.3/dist/kaia-services.mjs';
-      let facedetActive = false, serialActive = false, streaming = false;
-      const showDebugLogText = 'Show debug log';
-      const green = "#5cb85c", red = "#ff4444";
-      let canvas, messaging, serial, scout, multiDet;
-      let myConsole = {};
-      const roomName = 'console';
-      setup();
+      import { createWebRTCHelper } from 'https://cdn.jsdelivr.net/npm/kaia-utils.js@0.1.0/dist/kaia-utils.mjs';
+      let messaging, serial, webrtc;
+      const roomName = 'gamepad';
 
-      async function setup() {
-        try {
-          setupGui();
-          createDeviceSettings({ screenOrientationLock: true, fullScreen: true, wakeLock: true });          
-          startVideo();
-          multidetInit();
-          serial = await createSerial({ baudRate: 115200 });
-          print('Created serial');
-          scout = await createScout({ serial: serial, eventListener: onScoutEvent });
-          print('Created scout');
-          messaging = await createMessaging({ io: io(), eventListener: onMessageEvent, rooms: roomName });
-          print('Created messaging');
-        } catch (e) {
-          console.log('setup() catch() ', e);
-        }
-      }
-      function setupGui() {
-        document.getElementById("showLogButton").onclick = setLogButtonText;
-        const logButton = document.getElementById("showLogButton");
-        logButton.innerHTML = showDebugLogText
-        logButton.onclick = setLogButtonText;
-      }
-      function setStreamingActive(isActive) {
-        if (isActive && !streaming) {
-          document.getElementById("videoStreamingText").innerHTML = " Video is streaming";
-          document.getElementById("videoStreamingIcon").style.backgroundColor = green;
-        }
-        streaming = isActive;
-      }
-      function setFaceDetActive(isActive) {
-        if (isActive && !facedetActive) {
-          document.getElementById("faceDetActiveIcon").style.backgroundColor = green;
-          document.getElementById("faceDetActiveText").innerHTML = " Face detection active";
-        }
-        facedetActive = isActive;
-      }
-      function setSerialActive(isActive) {
-        if (isActive && !serialActive) {
-          document.getElementById("arduinoConnectedText").innerHTML = " Serial USB connected";
-          document.getElementById("arduinoConnectedIcon").style.backgroundColor = green;      
-        } else if (!isActive && serialActive) {
-          document.getElementById("arduinoConnectedText").innerHTML = " Serial USB disconnected";
-          document.getElementById("arduinoConnectedIcon").style.backgroundColor = red;
-        }
-        serialActive = isActive;
-      }
-      function print(messageText) {
-        let log = document.getElementById("log");
-        let logText = log.innerHTML;
-        if (logText)
-          log.innerHTML = messageText + '\n' + logText;
-        else
-          log.innerHTML = messageText;
-      }
-      function startVideo() {
-        canvas = document.createElement('canvas');
-        canvas.width = 240;
-        canvas.height = 180; // 320
-        getStream();
-      } 
-      function printEvent(eventType, arg) {
-        print(arg === undefined ? eventType : eventType + ' ' + JSON.stringify(arg));
-      }
+      const status = document.getElementById('status');
+
+      createDeviceSettings({ screenOrientationLock: 'landscape', fullScreen: true, wakeLock: true, pageZoom: false,
+        swipeToReload: false });
+
+      createSerial({ baudRate: 115200 }).then(res => {
+        serial = res;
+        setStatus('Launch gamepad app');
+        return createMessaging({ io: io(), rooms: roomName });
+      }).then(res => {
+        messaging = res;
+        setStatus('Waiting for gamepad app connection');
+        return createWebRTCHelper({ messaging: messaging, eventListener: onWebRTCEvent, room: roomName });
+      }).then(res => {
+        webrtc = res;
+        setStatus('Gamepad connected');
+        document.body.style.backgroundColor = "black"
+      }).catch(() => document.body.style.backgroundColor = "red" );
+
       function setStatus(msg) {
-        document.getElementById("status").innerHTML = msg;
+        status.innerHTML = msg;
       }
-      async function reactToFaces(data) {
-        if (!data.faces || !data.faces.length) {
-          setStatus('I don\'t see any faces');
-          return;
-        } else if (data.faces.length > 1) {
-          setStatus('I see ' + data.faces.length + ' faces');
-          return;
-        }
-
-        let face = data.faces[0];
-        let center_x = face.left + face.width/2;
-        let threshold_x = canvas.width / 7;
-        let center_x_canvas = canvas.width / 2;
-        if (center_x > center_x_canvas + threshold_x) {
-          if (canTurn()) {
-            setStatus('Turning towards face to the right');
-            await scout.turn(10);
-          } else
-            setStatus('I see a face to the right');    
-        } else if (center_x < center_x_canvas - threshold_x) {
-          if (canTurn()) {
-            setStatus('Turning towards face to the left');
-            await scout.turn(-10);
-          } else
-            setStatus('I see a face to the left');
-        } else
-          setStatus('I see a face near center');
-      }
-      function canTurn() {
-        return (typeof scout === 'object') && scout.connected() && !scout.busy();
-      }
-
-      async function multidetInit() {
-        multiDet = await createAndroidMultiDetector({
-          "face": {"enableDetection" : true, "computeLandmarks" : false, "useFastSpeed" : true, "tracking" : true,
-                   "prominentFacesOnly" : true, "computeClassifications" : false, "minFaceSize" : 0.2},
-          "barcodes" : {"enableDetection" : false},
-          "text" : {"enableDetection" : false},
-          eventListener: multidetEventListener
-        });
-      }
-      function multidetEventListener(err, res) {
-        if (err)
-          setStatus('Error detecting faces ' + err);
-        else {
-          setFaceDetActive(true);
-          reactToFaces(res);
-        }
-      };
-      async function multidetDetect() {
-        if (!streaming)
-          return;
-        let imageURI = grabFrame();
-        await multiDet.detect(imageURI);
-      }
-      function getUserMedia(options, successCallback, failureCallback) {
-        var api = navigator.getUserMedia;
-        if (api)
-          return api.bind(navigator)(options, successCallback, failureCallback);
-        print('User Media API not supported.');
-      }
-      function getStream() {
-        getUserMedia({video: true, audio: false}, function (stream) {
-          let video = document.querySelector('video');
-          video.srcObject = stream;
-          video.addEventListener('progress', function(ev) {
-            if (!streaming) {
-              canvas.height = video.videoHeight / (video.videoWidth/canvas.width);
-              video.setAttribute('width', canvas.width);
-              video.setAttribute('height', canvas.height);
-              setStreamingActive(true);
-            }
-          }, false);
-          window.setInterval(multidetDetect, 2000);
-        }, function (err) {
-          print('Error getting video: ' + JSON.stringify(err));
-        });
-      }
-      function grabFrame() {
-        var ctx = canvas.getContext('2d');
-        var vid = document.querySelector('video');
-        ctx.drawImage(vid, 0, 0, canvas.width, canvas.height);
-        // TODO
-        //let imageData = context.getImageData(0, 0, size, size);
-        //return imageData.data.buffer; // decode(ArrayBuffer, {width, height})
-        let imageURI = canvas.toDataURL('image/jpeg', 0.3); // 1.0 for max quality
-        return imageURI;
-      }
-      function setLogButtonText() {
-        let button = document.getElementById("showLogButton");
-        button.innerHTML = (button.innerHTML === showDebugLogText) ?'Hide debug log' : showDebugLogText;
-      }
-      function onScoutEvent(err, info) {
-        switch(info.event) {
-          case "parsed":
-            // Received and parsed message from bot's Arduino base over serial USB
-            setSerialActive(true);
+      
+      function onWebRTCEvent(err, msg) {
+        switch (msg.event) {
+          case 'dataChannelClose':
+          case 'dataChannelError':
+            document.body.style.backgroundColor = "brown";
             break;
-          case "disconnected":
-            // Bot's Arduino base serial USB has disconnected
-            setSerialActive(false);
+          case 'dataChannelMessage':
+            const speed = JSON.parse(msg.data.data);
+            speed.left = speed.left / 100.0;
+            speed.right = speed.right / 100.0;
+            let msg = 'L' + speedToHex(speed.left) + ' R' + speedToHex(speed.right) + '\n';            
+console.log(msg);
+            serial.write(msg);
             break;
         }
-      } 
-      function forwardConsole(en) {
-        if (en) {
-          myConsole.log = console.log;
-          myConsole.error = console.error;
-          myConsole.warn = console.warn;
-          window.console.log = function () {
-            let msg = JSON.stringify(arguments);
-            messaging.send(msg);
-            myConsole.log(arguments);
-          };
-          window.console.error = function () {
-            let msg = JSON.stringify(arguments);
-            messaging.send(msg);
-            myConsole.error(arguments);
-          };
-          window.console.warn = function () {
-            let msg = JSON.stringify(arguments);
-            messaging.send(msg);
-            myConsole.warn(arguments);
-          };
-        } else {
-          console.log = myConsole.log;
-          console.error = myConsole.error;
-          console.warn = myConsole.warn;
-          myConsole = {};
-        }
-      };  
-      function onMessageEvent(err, msg) {
-        if (err)
-          console.log('onMessageEvent() error ' + err);
-        else if  (msg.event === 'message') {
-          // evaluate and return result
-          let res = eval(msg.message);
-          res = typeof res === 'object' ? JSON.stringify(res) : res;
-          messaging.send(res);
-        }
+      }      
+
+      function speedToHex(speed) {
+        if (speed === 0)
+          return '';
+        speed = Math.round(speed * 255);
+        return ((speed >= 0) ? speed : (0x10000 + speed)).toString(16);
       }
     </script>
-    <div class="container">
-
-      <div class="row align-items-center">
-        <div class="col-sm-auto">
-          <video autoplay style="height:180px; width: 240px;" poster="video-camera.png"></video>
-        </div>
-        <div class="p-3 flex-fill">
-          <p><i class="fa fa-check" id="arduinoConnectedIcon"></i><span id="arduinoConnectedText"> Connect USB cable</span></p>
-          <p><i class="fa fa-check" id="videoStreamingIcon"></i><span id="videoStreamingText"> Waiting for video</span></p>
-          <p><i class="fa fa-check" id="faceDetActiveIcon"></i><span id="faceDetActiveText"> Waiting face detection</span></p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="p-3 m-3 mr-0 flex-fill border" id="status">I don't see any faces</div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-12">
-              <div class="collapse" id="collapse_log">
-                <label for="log"> </label>
-                <textarea class="form-control" rows="15" id="log" readonly></textarea>
-              </div>
-        </div>
-      </div>  
-
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="form-group">
-              <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapse_log" aria-expanded="false" aria-controls="collapseExample" id="showLogButton">Show debug log</button>
-          </div>  
-        </div>
-      </div>
-
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   </body>
 </html>
