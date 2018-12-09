@@ -57,8 +57,9 @@
         }
       };
       
-      createDeviceSettings({ screenOrientationLock: 'landscape', fullScreen: true, wakeLock: true, pageZoom: false,
-        swipeToReload: false });  
+      if (window._kaia)
+        createDeviceSettings({ screenOrientationLock: 'landscape', fullScreen: true, wakeLock: true, pageZoom: false,
+          swipeToReload: false });  
       
       const joystickLeft = nipplejs.create(joysticks['staticLeft']);
       joystickLeft.on('move', (evt, data) => dataLeft = data ).on('start', () => touchLeft = true ).on('end', () => touchLeft = false );
