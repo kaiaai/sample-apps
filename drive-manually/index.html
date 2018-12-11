@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drive Around</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  </head>
+  <body bgcolor="blue">
+    <div id="status" style="color:white">Plug in USB cable</div>
+    <script src="/socket.io/socket.io.js"></script>    
+    <script type="module">
+      import { createDeviceSettings, createSerial } from 'https://cdn.jsdelivr.net/npm/kaia.js@0.8.0/dist/kaia.mjs';
+      import { createMessaging } from 'https://cdn.jsdelivr.net/npm/kaia-services.js@0.0.3/dist/kaia-services.mjs';
+      import { createWebRTCHelper } from 'https://cdn.jsdelivr.net/npm/kaia-utils.js@0.1.0/dist/kaia-utils.mjs';
+      let serial, webrtc;
+      const roomName = 'gamepad';
+
+      const status = document.getElementById('status');
+
+      createDeviceSettings({ screenOrientationLock: 'landscape', fullScreen: true, wakeLock: true, pageZoom: false,
+        swipeToReload: false });
+
+      createSerial({ baudRate: 115200 }).then(res => {
+        serial = res;
+        setStatus('Launch gamepad app');
+        return createMessaging({ io: io(), rooms: roomName });
+      }).then(res => {
+        setStatus('Waiting for gamepad app connection');
+        return createWebRTCHelper({ messaging: res, eventListener: onWebRTCEvent, room: roomName });
+      }).then(res => {
+        webrtc = res;
+        setStatus('Gamepad connected');
+        document.body.style.backgroundColor = "black"
+      }).catch(() => document.body.style.backgroundColor = "red" );
+
+      function setStatus(msg) {
+        status.innerHTML = msg;
+      }
+      
+      function onWebRTCEvent(err, msg) {
+        switch (msg.event) {
+          case 'dataChannelClose':
+          case 'dataChannelError':
+            document.body.style.backgroundColor = "brown";
+            break;
+          case 'dataChannelMessage':
+            const speed = JSON.parse(msg.data.data);
+            speed.left = speed.left / 100.0;
+            speed.right = speed.right / 100.0;
+            const cmd = 'L' + speedToHex(speed.left) + ' R' + speedToHex(speed.right) + '\n';            
+            serial.write(cmd);
+            setStatus(speed.left + ', ' + speed.right);
+            break;
+        }
+      }      
+
+      function speedToHex(speed) {
+        if (speed === 0)
+          return '';
+        speed = Math.round(speed * 255);
+        return ((speed >= 0) ? speed : (0x10000 + speed)).toString(16);
+      }
+    </script>
+  </body>
+</html>

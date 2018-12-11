@@ -30,7 +30,7 @@ We have not yet launched the platform. For launch announcement please follow us 
 25. Miscellaneous W3C API, [Live Demo](https://kaia.ai/view-app/5bf724fb29577a624cfb1f05), [Source](https://github.com/kaiaai/sample-apps/tree/master/misc-w3c) - use vibration, query memory and storage sizes, number of logical CPUs, network connection type and speed
 26. Video Recorder, [Live Demo](https://kaia.ai/view-app/5bf7db1e219810765f711539), [Source](https://github.com/kaiaai/sample-apps/tree/master/video-recorder) - record, download video with or without audio; grab still frames
 27. WebRTC Messaging, [Live Demo](https://kaia.ai/view-app/5bf910b2b7f0731e286bbccc), [Source](https://github.com/kaiaai/sample-apps/tree/master/webrtc-messaging) - peer-to-peer (e.g. bot-to-desktop) messaging, also used for gamepad
-28. Drive Around, [Live Demo](https://kaia.ai/view-app/5c0d831d2f0a65553d73c558), [Source](https://github.com/kaiaai/sample-apps/tree/master/drive-around) - drive robot using [tank-style](https://github.com/kaiaai/sample-apps/tree/master/gamepad-tank) or [joystick-style](https://github.com/kaiaai/sample-apps/tree/master/gamepad) gamepad.
+28. Drive Manually, [Live Demo](https://kaia.ai/view-app/5c0d831d2f0a65553d73c558), [Source](https://github.com/kaiaai/sample-apps/tree/master/drive-manually) - drive robot using [tank-style](https://github.com/kaiaai/sample-apps/tree/master/gamepad-tank) or [joystick-style](https://github.com/kaiaai/sample-apps/tree/master/gamepad) gamepad.
 
 ## Instructions to Run Apps
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
