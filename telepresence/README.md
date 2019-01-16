@@ -7,7 +7,7 @@ Log in to kaia.ai site on your smartphone and launch this app. Then also log in 
 
 ## Live Demo
 - [Sample App](https://kaia.ai/view-app/5bdfd8251c3c5242d93d43ad)
-- Sample app [source code](https://github.com/kaiaai/tree/master/telepresence)
+- Sample app [source code](https://github.com/kaiaai/sample-apps/tree/master/telepresence)
 
 ## Installation
 Kaia.ai robot apps run on Android smartphones. To run the sample app:
